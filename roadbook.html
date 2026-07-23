@@ -33,7 +33,7 @@
     text-decoration:none;
     margin-bottom:10px;
   }
-  .banniere-test{
+  .banniere-simulation{
     background:#FBF0DC;
     color:#8A5A00;
     font-size:11px;
@@ -44,7 +44,7 @@
     margin-bottom:12px;
     cursor:pointer;
   }
-  .banniere-test.hidden{ display:none; }
+  .banniere-simulation.hidden{ display:none; }
   h1{
     font-size:19px;
     color:var(--blue);
@@ -125,10 +125,10 @@
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page" id="top">
 
   <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
-  <div class="banniere-test hidden" id="banniere-test">MODE TEST ACTIF — toucher pour ajuster</div>
+  <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
 
   <h1>Roadbook</h1>
   <p class="intro">Informations pratiques et festivités de chaque escale du Tour du Finistère à la Voile 2026. Source exclusive : Roadbook officiel CDV29.</p>
@@ -164,7 +164,7 @@
     <img src="assets/img/roadbook/roscoff.jpg" alt="Schéma du port de Roscoff : Fête de la mer, Village Tourduf, Port du Bloscon" loading="lazy">
     <figcaption>Schéma de port — Roscoff</figcaption>
   </figure>
-  <a class="retour-sommaire" href="#roscoff">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="escale" id="aber-wrach">
@@ -185,7 +185,7 @@
     <img src="assets/img/roadbook/aber-wrach.jpg" alt="Schéma du port de l'Aber Wrac'h : PC Course, Village Tourduf, zones de mouillage par taille de bateau" loading="lazy">
     <figcaption>Schéma de port — Aber Wrac'h</figcaption>
   </figure>
-  <a class="retour-sommaire" href="#aber-wrach">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="escale" id="lanildut">
@@ -206,7 +206,7 @@
     <img src="assets/img/roadbook/lanildut.jpg" alt="Schéma du port de Lanildut : PC Course, Village Tourduf" loading="lazy">
     <figcaption>Schéma de port — Lanildut</figcaption>
   </figure>
-  <a class="retour-sommaire" href="#lanildut">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="escale" id="camaret">
@@ -226,7 +226,7 @@
     <img src="assets/img/roadbook/camaret.jpg" alt="Schéma du port de Camaret-sur-Mer : bassin Vauban, PC Course, Village Tourduf, emplacements PMR" loading="lazy">
     <figcaption>Schéma de port — Camaret-sur-Mer</figcaption>
   </figure>
-  <a class="retour-sommaire" href="#camaret">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="escale" id="douarnenez">
@@ -246,7 +246,7 @@
     <img src="assets/img/roadbook/douarnenez.jpg" alt="Schéma du port de Douarnenez : PC Course, Centre Nautique, Village Tourduf, zones bateaux par taille, Salle Jules Verne" loading="lazy">
     <figcaption>Schéma de port — Douarnenez</figcaption>
   </figure>
-  <a class="retour-sommaire" href="#douarnenez">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="escale" id="port-la-foret">
@@ -268,7 +268,7 @@
     <img src="assets/img/roadbook/port-la-foret.jpg" alt="Schéma du port de Port la Forêt : Ilot Skoen, Village Tourduf, navette retour" loading="lazy">
     <figcaption>Schéma de port — Port la Forêt</figcaption>
   </figure>
-  <a class="retour-sommaire" href="#port-la-foret">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
 </div>
@@ -277,8 +277,8 @@
 <script>
 (function () {
   'use strict';
-  var banniere = document.getElementById('banniere-test');
-  if (AppCommun.estModeTestActif()) {
+  var banniere = document.getElementById('banniere-simulation');
+  if (AppCommun.estModeSimulationActif()) {
     banniere.classList.remove('hidden');
     banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
   }

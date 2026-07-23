@@ -135,7 +135,7 @@
     background:var(--blue);
     color:#FFFFFF;
   }
-  .test-fields{
+  .simulation-fields{
     background:var(--surface2);
     border:1px solid var(--border);
     border-top:none;
@@ -143,18 +143,18 @@
     padding:14px 14px 16px;
     margin:-4px 0 20px;
   }
-  .test-fields.hidden{ display:none; }
-  .test-fields .field{
+  .simulation-fields.hidden{ display:none; }
+  .simulation-fields .field{
     margin-bottom:10px;
   }
-  .test-fields .field.hidden{ display:none; }
-  .test-fields label{
+  .simulation-fields .field.hidden{ display:none; }
+  .simulation-fields label{
     font-size:11px;
     color:var(--text-muted);
     display:block;
     margin-bottom:4px;
   }
-  .test-fields input, .test-fields select{
+  .simulation-fields input, .simulation-fields select{
     width:100%;
     padding:6px 8px;
     border:1px solid var(--border);
@@ -163,7 +163,7 @@
     font-family:inherit;
     background:#fff;
   }
-  .test-banner{
+  .simulation-banner{
     background:#FBF0DC;
     color:#8A5A00;
     font-size:11px;
@@ -194,10 +194,10 @@
 
   <div class="mode-toggle">
     <button id="btn-mode-course" type="button">Mode course</button>
-    <button id="btn-mode-test" type="button">Mode test</button>
+    <button id="btn-mode-simulation" type="button">Mode simulation</button>
   </div>
-  <div class="test-fields hidden" id="test-fields">
-    <div class="test-banner">MODE TEST ACTIF</div>
+  <div class="simulation-fields hidden" id="simulation-fields">
+    <div class="simulation-banner">MODE SIMULATION ACTIF</div>
     <div class="field">
       <label for="champ-jour">Jour simulé</label>
       <input type="date" id="champ-jour">
@@ -303,8 +303,8 @@
   var elStageLabel = document.getElementById('stage-label');
   var elStageTitle = document.getElementById('stage-title');
   var btnCourse = document.getElementById('btn-mode-course');
-  var btnTest = document.getElementById('btn-mode-test');
-  var testFields = document.getElementById('test-fields');
+  var btnSimulation = document.getElementById('btn-mode-simulation');
+  var simulationFields = document.getElementById('simulation-fields');
   var champJour = document.getElementById('champ-jour');
   var champHeure = document.getElementById('champ-heure');
   var champPosition = document.getElementById('champ-position');
@@ -370,30 +370,30 @@
     champPersoLonWrap.classList.toggle('hidden', !estPerso);
   }
 
-  function sauvegarderEtatTest() {
-    AppCommun.activerModeTest(champJour.value, champHeure.value, positionCourante());
+  function sauvegarderEtatSimulation() {
+    AppCommun.activerModeSimulation(champJour.value, champHeure.value, positionCourante());
     rafraichirAffichage();
   }
 
   function activerModeCoursePanneau() {
-    AppCommun.desactiverModeTest();
-    testFields.classList.add('hidden');
+    AppCommun.desactiverModeSimulation();
+    simulationFields.classList.add('hidden');
     btnCourse.classList.add('active');
-    btnTest.classList.remove('active');
+    btnSimulation.classList.remove('active');
     rafraichirAffichage();
   }
 
-  function activerModeTestPanneau() {
+  function activerModeSimulationPanneau() {
     var maintenant = new Date();
     if (!champJour.value) { champJour.value = jourLocalISO(maintenant); }
     if (!champHeure.value) { champHeure.value = heureLocaleISO(maintenant); }
     // Défaut sûr : position non simulée tant que l'utilisateur n'a pas choisi une escale.
     champPosition.value = '__indisponible__';
     majAffichageChampsPersonnalise();
-    testFields.classList.remove('hidden');
-    btnTest.classList.add('active');
+    simulationFields.classList.remove('hidden');
+    btnSimulation.classList.add('active');
     btnCourse.classList.remove('active');
-    sauvegarderEtatTest();
+    sauvegarderEtatSimulation();
   }
 
   function formatDateAffichage(date) {
@@ -415,35 +415,35 @@
   function initialiser() {
     remplirOptionsPosition();
 
-    var test = AppCommun.lireModeTest();
-    if (test) {
-      champJour.value = test.jour || '';
-      champHeure.value = test.heure || '';
-      if (test.position && test.position.type === 'escale') {
-        champPosition.value = test.position.valeur;
-      } else if (test.position && test.position.type === 'personnalise') {
+    var simulation = AppCommun.lireModeSimulation();
+    if (simulation) {
+      champJour.value = simulation.jour || '';
+      champHeure.value = simulation.heure || '';
+      if (simulation.position && simulation.position.type === 'escale') {
+        champPosition.value = simulation.position.valeur;
+      } else if (simulation.position && simulation.position.type === 'personnalise') {
         champPosition.value = '__personnalise__';
-        if (test.position.valeur) {
-          champPersoLat.value = test.position.valeur.lat != null ? test.position.valeur.lat : '';
-          champPersoLon.value = test.position.valeur.lon != null ? test.position.valeur.lon : '';
+        if (simulation.position.valeur) {
+          champPersoLat.value = simulation.position.valeur.lat != null ? simulation.position.valeur.lat : '';
+          champPersoLon.value = simulation.position.valeur.lon != null ? simulation.position.valeur.lon : '';
         }
       } else {
         champPosition.value = '__indisponible__';
       }
       majAffichageChampsPersonnalise();
-      testFields.classList.remove('hidden');
-      btnTest.classList.add('active');
+      simulationFields.classList.remove('hidden');
+      btnSimulation.classList.add('active');
     } else {
       btnCourse.classList.add('active');
     }
 
     btnCourse.addEventListener('click', activerModeCoursePanneau);
-    btnTest.addEventListener('click', activerModeTestPanneau);
-    champJour.addEventListener('change', sauvegarderEtatTest);
-    champHeure.addEventListener('change', sauvegarderEtatTest);
-    champPosition.addEventListener('change', function () { majAffichageChampsPersonnalise(); sauvegarderEtatTest(); });
-    champPersoLat.addEventListener('change', sauvegarderEtatTest);
-    champPersoLon.addEventListener('change', sauvegarderEtatTest);
+    btnSimulation.addEventListener('click', activerModeSimulationPanneau);
+    champJour.addEventListener('change', sauvegarderEtatSimulation);
+    champHeure.addEventListener('change', sauvegarderEtatSimulation);
+    champPosition.addEventListener('change', function () { majAffichageChampsPersonnalise(); sauvegarderEtatSimulation(); });
+    champPersoLat.addEventListener('change', sauvegarderEtatSimulation);
+    champPersoLon.addEventListener('change', sauvegarderEtatSimulation);
 
     rafraichirAffichage();
   }

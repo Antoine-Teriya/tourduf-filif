@@ -33,7 +33,7 @@
     text-decoration:none;
     margin-bottom:10px;
   }
-  .banniere-test{
+  .banniere-simulation{
     background:#FBF0DC;
     color:#8A5A00;
     font-size:11px;
@@ -44,7 +44,7 @@
     margin-bottom:12px;
     cursor:pointer;
   }
-  .banniere-test.hidden{ display:none; }
+  .banniere-simulation.hidden{ display:none; }
   h1{
     font-size:19px;
     color:var(--blue);
@@ -162,10 +162,10 @@
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page" id="top">
 
   <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
-  <div class="banniere-test hidden" id="banniere-test">MODE TEST ACTIF — toucher pour ajuster</div>
+  <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
 
   <h1>Instructions de course</h1>
   <p class="intro">Tour du Finistère à la Voile 2026 — Grade 3, 27 juillet au 1<sup>er</sup> août 2026. Source exclusive : Instructions de Course officielles CDV29. En cas de modification sur l'eau, le tableau officiel et la VHF canal 77 font foi.</p>
@@ -333,14 +333,14 @@
 
   <p style="font-size:11.5px; color:var(--text-muted); margin-top:16px;"><strong>Arbitres désignés</strong> — Président du comité de course : Eric Bournot. Comités adjoints : Godelieve Blanckaert, Michel Le Mer, Michel Tarsiguel, Christian Leaustic. Président du comité technique : Bruno Le Breton (adjoint : Christian Cariou). Président du jury : Laurent Remy (juges adjoints : Cécile Tymen Le Floch, Bruno Le Maître). Commissaire aux résultats : Maryse Hillion.</p>
 
-  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="ic-section" id="zones">
   <h2>Annexe Zones de course</h2>
   <p>Zones couvertes par les cartes marines SHOM conseillées : 7150, 6930, 7151, 7031, 7146, 7066, 7147, 7148, 7177, 6680, 7149 A.</p>
   <div class="placeholder-image">Carte des zones de course — image à ajouter dans une prochaine mise à jour (IC p.11)</div>
-  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="ic-section" id="parcours">
@@ -367,7 +367,7 @@
     </tbody>
   </table>
   </div>
-  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
 
   <h4 class="course-titre" id="course-2">Course 2 — Mardi 28 juillet 2026 : Aber Wrac'h → Lanildut</h4>
   <p class="meta-course">1er signal d'avertissement : 9h30 · Zone de départ : Nord de la Tourelle Bréac'h Ver</p>
@@ -438,7 +438,7 @@
     </tbody>
   </table>
   </div>
-  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
 
   <h4 class="course-titre" id="course-3">Course 3 — Mercredi 29 juillet 2026 : Lanildut → Camaret-sur-Mer</h4>
   <p class="meta-course">1er signal d'avertissement : 9h30 · Zone de départ : Ouest de Le Lieu</p>
@@ -512,7 +512,7 @@
     </tbody>
   </table>
   </div>
-  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
 
   <h4 class="course-titre" id="course-4">Course 4 — Jeudi 30 juillet 2026 : Camaret-sur-Mer → Douarnenez</h4>
   <p class="meta-course">1er signal d'avertissement : 9h30 · Zone de départ : Nord du môle</p>
@@ -567,13 +567,13 @@
   </table>
   </div>
   <p class="placeholder-image" style="margin-top:4px;">Extrait de carte marine complémentaire (zone Camaret / Baie de Douarnenez) — image à ajouter dans une prochaine mise à jour (IC p.18)</p>
-  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
 
   <h4 class="course-titre" id="course-5">Course 5 — Vendredi 31 juillet 2026 : Douarnenez (parcours construit)</h4>
   <p class="meta-course">1er signal d'avertissement : 13h00 · Zone de départ : Nord de l'Île Tristan</p>
   <p><strong>Séquence du parcours construit :</strong> Départ – 1 – 2 – Porte 3 – 1 – 2 – 3B – Arrivée</p>
   <p>Les bouées 1, 2 et 3B sont à contourner à bâbord.</p>
-  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
 
   <h4 class="course-titre" id="course-6">Course 6 — Vendredi 31 juillet 2026 : Douarnenez → Port la Forêt (course de nuit)</h4>
   <p class="meta-course">1er signal d'avertissement : 17h00 · Zone de départ : Nord de l'Île Tristan</p>
@@ -640,7 +640,7 @@
   </table>
   </div>
 
-  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="ic-section" id="pointage">
@@ -650,13 +650,13 @@
   <p>Si le comité décide ensuite d'interrompre la course, il arborera les pavillons S sur H avec deux signaux sonores et, si nécessaire, le pavillon de classe des séries concernées, signifiant : « La course est interrompue et le dernier pointage officiel sera pris en compte comme ordre d'arrivée. Le comité de course confirmera, si possible, ces indications par VHF. »</p>
   <p>La porte où le dernier pointage officiel a été effectué devient alors la ligne d'arrivée pour les classes concernées. Si un incident pouvant donner lieu à réclamation survient entre le passage de cette ligne et l'interruption signalée, aucun bateau ne peut être pénalisé pour une infraction au chapitre 2, sauf RCV 14 (blessure ou dommage sérieux) ou RCV 23.1.</p>
   <p>Un pointage officiel peut être effectué aux marques « à contourner » signalées en annexe Parcours.</p>
-  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
   <section class="ic-section" id="marees">
   <h2>Annexe Heures des marées/étapes</h2>
   <div class="placeholder-image">Tableau des heures de marée par étape — image à ajouter dans une prochaine mise à jour (IC p.23-24, aucun texte extractible à la source)</div>
-  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  <a class="retour-sommaire" href="#top">Retour au sommaire</a>
   </section>
 
 </div>
@@ -665,8 +665,8 @@
 <script>
 (function () {
   'use strict';
-  var banniere = document.getElementById('banniere-test');
-  if (AppCommun.estModeTestActif()) {
+  var banniere = document.getElementById('banniere-simulation');
+  if (AppCommun.estModeSimulationActif()) {
     banniere.classList.remove('hidden');
     banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
   }

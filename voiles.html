@@ -32,7 +32,7 @@
     text-decoration:none;
     margin-bottom:10px;
   }
-  .banniere-test{
+  .banniere-simulation{
     background:#FBF0DC;
     color:#8A5A00;
     font-size:11px;
@@ -43,7 +43,7 @@
     margin-bottom:12px;
     cursor:pointer;
   }
-  .banniere-test.hidden{ display:none; }
+  .banniere-simulation.hidden{ display:none; }
   h1{
     font-size:19px;
     color:var(--blue);
@@ -118,7 +118,7 @@
 <div class="page">
 
   <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
-  <div class="banniere-test hidden" id="banniere-test">MODE TEST ACTIF — toucher pour ajuster</div>
+  <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
 
   <h1>Configuration des voiles</h1>
   <p class="intro">Configuration recommandée (grand-voile, génois, spi asymétrique ou symétrique) et vitesse cible pour un couple angle/force de vent donné, d'après les polaires officielles Finot Architectes.</p>
@@ -402,8 +402,8 @@
 <script>
 (function () {
   'use strict';
-  var banniere = document.getElementById('banniere-test');
-  if (AppCommun.estModeTestActif()) {
+  var banniere = document.getElementById('banniere-simulation');
+  if (AppCommun.estModeSimulationActif()) {
     banniere.classList.remove('hidden');
     banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
   }
