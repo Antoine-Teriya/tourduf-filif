@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instructions de course — Filifer</title>
+<style>
+  :root{
+    --blue:#0B4C7C;
+    --bg:#FAFAFA;
+    --surface2:#FFFFFF;
+    --border:#E2E2E0;
+    --text-primary:#2B2A28;
+    --text-muted:#8A867F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text-primary);
+    line-height:1.5;
+  }
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:18px 18px 40px;
+  }
+  .retour{
+    display:inline-block;
+    font-size:12px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-bottom:10px;
+  }
+  .banniere-test{
+    background:#FBF0DC;
+    color:#8A5A00;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+    padding:6px 10px;
+    border-radius:6px;
+    margin-bottom:12px;
+    cursor:pointer;
+  }
+  .banniere-test.hidden{ display:none; }
+  h1{
+    font-size:19px;
+    color:var(--blue);
+    margin:6px 0 4px;
+  }
+  .intro{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin:0 0 16px;
+    line-height:1.5;
+  }
+  .sommaire{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px 16px;
+    margin-bottom:22px;
+    font-size:13px;
+  }
+  .sommaire h2{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--text-muted);
+    margin:0 0 8px;
+  }
+  .sommaire ol{
+    margin:0;
+    padding-left:18px;
+  }
+  .sommaire li{ margin-bottom:4px; }
+  .sommaire a{ color:var(--blue); text-decoration:none; }
+  .sommaire .sous-liste{
+    margin:4px 0 4px 0;
+    padding-left:16px;
+    font-size:12.5px;
+  }
+  section.ic-section{
+    margin-bottom:30px;
+    padding-top:6px;
+  }
+  section.ic-section > h2{
+    font-size:16px;
+    color:var(--blue);
+    border-bottom:2px solid var(--blue);
+    padding-bottom:6px;
+    margin:0 0 12px;
+  }
+  h3.regle-titre{
+    font-size:13.5px;
+    margin:18px 0 6px;
+    color:var(--text-primary);
+  }
+  h4.course-titre{
+    font-size:14.5px;
+    color:var(--blue);
+    margin:20px 0 4px;
+  }
+  h5.parcours-titre{
+    font-size:13px;
+    color:var(--text-primary);
+    margin:12px 0 6px;
+    font-weight:700;
+  }
+  .meta-course{
+    font-size:12px;
+    color:var(--text-muted);
+    margin:0 0 8px;
+  }
+  p{ font-size:13px; margin:0 0 8px; }
+  .placeholder-image{
+    background:#F1F5F8;
+    border:1px dashed var(--border);
+    border-radius:8px;
+    padding:14px;
+    font-size:12px;
+    color:var(--text-muted);
+    text-align:center;
+    margin:10px 0 16px;
+  }
+  .table-scroll{
+    overflow:auto;
+    max-height:50vh;
+    border:1px solid var(--border);
+    border-radius:8px;
+    margin-bottom:14px;
+  }
+  table.waypoints{
+    border-collapse:separate;
+    border-spacing:0;
+    width:100%;
+    font-size:11.5px;
+    white-space:nowrap;
+  }
+  table.waypoints th, table.waypoints td{
+    padding:5px 8px;
+    border-bottom:1px solid var(--border);
+    border-right:1px solid var(--border);
+    text-align:left;
+  }
+  table.waypoints th{
+    background:var(--blue);
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:1;
+  }
+  .retour-sommaire{
+    display:inline-block;
+    font-size:11px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-top:4px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+  <div class="banniere-test hidden" id="banniere-test">MODE TEST ACTIF — toucher pour ajuster</div>
+
+  <h1>Instructions de course</h1>
+  <p class="intro">Tour du Finistère à la Voile 2026 — Grade 3, 27 juillet au 1<sup>er</sup> août 2026. Source exclusive : Instructions de Course officielles CDV29. En cas de modification sur l'eau, le tableau officiel et la VHF canal 77 font foi.</p>
+
+  <div class="sommaire">
+    <h2>Sommaire</h2>
+    <ol>
+      <li><a href="#regles">Règles de course</a>
+        <div class="sous-liste">— <a href="#article-9">Article 9 : Les Parcours</a></div>
+      </li>
+      <li><a href="#zones">Annexe Zones de course</a></li>
+      <li><a href="#parcours">Annexe Parcours</a>
+        <div class="sous-liste">
+          <a href="#course-1">Course 1</a> · <a href="#course-2">Course 2</a> · <a href="#course-3">Course 3</a> · <a href="#course-4">Course 4</a> · <a href="#course-5">Course 5</a> · <a href="#course-6">Course 6</a>
+        </div>
+      </li>
+      <li><a href="#pointage">Annexe Pointage officiel à une marque</a></li>
+      <li><a href="#marees">Annexe Heures des marées/étapes</a></li>
+    </ol>
+  </div>
+
+  <section class="ic-section" id="regles">
+  <h2>Règles de course</h2>
+  <p style="font-size:11.5px; color:var(--text-muted);">[NP] : un bateau ne peut pas réclamer contre un autre pour infraction à cette règle (modifie RCV 60.1). [DP] : pénalité laissée à la discrétion du jury, pouvant être inférieure à une disqualification.</p>
+
+  <h3 class="regle-titre">1. Règles</h3>
+  <p>1.1 L'épreuve est régie par les règles telles que définies dans Les Règles de Course à la Voile.</p>
+  <p>1.2 Les manifestations sportives sont avant tout un espace d'échanges et de partage accessible à toutes et à tous. À ce titre, il est demandé aux concurrents, concurrentes, accompagnateurs et accompagnatrices de se comporter en toutes circonstances, à terre comme sur l'eau, de façon courtoise et respectueuse indépendamment de l'origine, du genre ou de l'orientation sexuelle des autres participants. Un manquement à ces principes pourra être pénalisé selon la RCV 2 ou 69.</p>
+
+  <h3 class="regle-titre">2. Modifications aux instructions de course</h3>
+  <p>2.1 Toute modification aux IC sera publiée au plus tard 2 heures avant le signal d'avertissement de la course concernée. Un changement de programme pourra être décidé 4 heures avant le signal d'avertissement du jour.</p>
+  <p>2.2 Des modifications peuvent être faites sur l'eau : le comité déploiera le pavillon L sur I avec un signal sonore et donnera les informations sur la VHF de course.</p>
+
+  <h3 class="regle-titre">3. Communications avec les concurrents</h3>
+  <p>3.1 Les avis aux concurrents seront publiés sur le tableau officiel : <a href="https://www.cdv29.com/tour-du-finistere-a-la-voile/">cdv29.com/tour-du-finistere-a-la-voile</a>. Un groupe WhatsApp relaie l'organisation terre/mer mais ne remplace jamais le tableau officiel.</p>
+  <p>3.2 Sur l'eau, le comité de course veille et communique sur le canal VHF 77.</p>
+  <p>3.3 Le tableau officiel du jury est sur le site Jury Décisions FFVoile.</p>
+
+  <h3 class="regle-titre">4. Code de conduite [DP] [NP]</h3>
+  <p>4.1 Les concurrents et accompagnateurs doivent se conformer aux demandes justifiées des arbitres.</p>
+  <p>4.2 La publicité fournie par l'autorité organisatrice doit être placée avec soin, en bon marin, sans gêner son fonctionnement.</p>
+
+  <h3 class="regle-titre">5. Signaux faits à terre et en mer</h3>
+  <p><strong>5.1 À terre</strong> — Sauf indication contraire, le mât de pavillon à terre est celui du bateau comité au port. « Aperçu » signifie : départ retardé, rester au port ; le signal d'avertissement ne sera pas fait moins de 30 min après l'affalé de l'Aperçu.</p>
+  <p><strong>5.2 En mer</strong> — « B » : parcours de type Construit mis en place. « D » : marque de dégagement existante (voir 9.3). « 2<sup>ème</sup> substitut » près d'une marque : pointage officiel en cours (voir 9.5). « F » : modification du coefficient de la course. « S sur H » : course arrêtée, dernier pointage officiel retenu comme arrivée (voir 9.5). « L sur I » : modifications aux IC données verbalement sur l'eau (RCV 90.2c). « O » : rejoindre directement la ligne d'arrivée.</p>
+
+  <h3 class="regle-titre" id="article-9-programme">6. Programme des courses</h3>
+  <p>6.1 Dates des courses :</p>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Date</th><th>Étape</th><th>1<sup>er</sup> signal d'avertissement</th></tr></thead>
+    <tbody>
+      <tr><td>Lundi 27 juillet</td><td>Roscoff → Aber Wrac'h</td><td>9h30</td></tr>
+      <tr><td>Mardi 28 juillet</td><td>Aber Wrac'h → Lanildut</td><td>9h30</td></tr>
+      <tr><td>Mercredi 29 juillet</td><td>Lanildut → Camaret</td><td>9h30</td></tr>
+      <tr><td>Jeudi 30 juillet</td><td>Camaret → Douarnenez</td><td>9h30</td></tr>
+      <tr><td>Vendredi 31 juillet</td><td>Douarnenez, parcours construit</td><td>13h00</td></tr>
+      <tr><td>Vendredi 31 juillet</td><td>Douarnenez → Port la Forêt</td><td>17h00</td></tr>
+      <tr><td>Samedi 1<sup>er</sup> août</td><td>Arrivées Port la Forêt</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>6.2 Un pavillon orange est envoyé au moins 5 minutes avant le signal d'avertissement pour prévenir d'un départ imminent.</p>
+
+  <h3 class="regle-titre">7. Pavillons de classe</h3>
+  <p>Les bateaux doivent montrer, en course, la flamme ou le pavillon de leur série (pataras ou hauban tribord). Groupes : OS1 Bodemer (flamme Bleu), OS2 Crédit Agricole (flamme CA), OS3 Caillarec (flamme Caillarec), IRC Tout Commence en Finistère (flamme TCF).</p>
+
+  <h3 class="regle-titre">8. Zones de course</h3>
+  <p>L'emplacement des zones de course est défini en <a href="#zones">annexe Zones de course</a>.</p>
+
+  <h3 class="regle-titre" id="article-9">9. Les parcours</h3>
+  <p>9.1 La zone de départ est normalement désignée en annexe. Si le comité impose une autre zone, le pavillon « L » signifie « Suivez-moi jusqu'à une nouvelle zone de départ » ; le coefficient de la course peut alors être multiplié par 0,5 (pavillon « F »).</p>
+  <p>9.2 Au signal d'avertissement, le comité indique le parcours à effectuer sur un tableau au bateau comité.</p>
+  <p>9.3 <strong>Parcours côtiers</strong> — le comité envoie le pavillon D s'il existe une marque de dégagement ; pavillon vert = la contourner à tribord, absence de pavillon vert = à bâbord.</p>
+  <p>9.4 Le comité peut modifier le parcours après le départ. Le changement est signalé près de la marque concernée par un bateau du comité arborant le pavillon C et le pavillon de série, avec signaux sonores brefs, affichant le relèvement compas ou le n° de la marque suivante (modifie RCV 33).</p>
+  <p>9.5 <strong>Pointage officiel à une marque</strong> — le comité peut interrompre une course selon RCV 32.1 et retenir le dernier pointage officiel comme ordre d'arrivée (modifie RCV 32). Détail complet en <a href="#pointage">annexe dédiée</a>.</p>
+  <p>9.6 Le pavillon O près d'une marque signifie : après cette marque, rejoindre directement la ligne d'arrivée en respectant balisage et dangers.</p>
+  <p>9.7 Les parcours sont définis en <a href="#parcours">annexe Parcours</a>. Les positions sont indicatives ; en cas de différence entre tableaux et schémas, <strong>les tableaux de parcours priment</strong>.</p>
+
+  <h3 class="regle-titre">10. Marques</h3>
+  <p>10.1 Départ : cylindrique orange. Marques de parcours : cylindrique jaune et/ou balisage. Dégagement : cylindrique orange. Changement : cylindrique orange. Arrivée : conique orange.</p>
+  <p>10.2 Un bateau du comité signalant un changement de bord fait office de marque.</p>
+
+  <h3 class="regle-titre">11. Zones qui sont des obstacles</h3>
+  <p>Les zones considérées comme des obstacles sont précisées en annexe Zones de course.</p>
+
+  <h3 class="regle-titre">12. Le départ</h3>
+  <p>12.1 La ligne de départ est entre le mât à pavillon orange du bateau comité (extrémité tribord) et le côté parcours de la marque de départ (extrémité bâbord).</p>
+  <p>12.2 [DP] [NP] Les bateaux dont le signal d'avertissement n'a pas été donné doivent éviter la zone de départ pendant la procédure des autres bateaux.</p>
+  <p>12.3 Un bateau côté parcours de la ligne à son signal de départ, s'il est identifié, pourra voir son numéro de voile annoncé sur la VHF, une minute après le départ (modifie RCV 61.1a).</p>
+  <p>12.4 Un bateau qui ne prend pas le départ au plus tard 4 minutes après son signal sera classé DNS sans instruction (modifie RCV A5.1 et A5.2).</p>
+  <p>12.5 Le comité peut mettre en place une procédure de départ sans mouiller les extrémités de la ligne ; la RCV 29 s'applique de la même façon.</p>
+
+  <h3 class="regle-titre">13. Changement du bord suivant du parcours</h3>
+  <p>13.1 Le comité mouille une nouvelle marque (ou déplace la ligne d'arrivée) et enlève l'ancienne dès que possible.</p>
+  <p>13.2 Sauf à une porte, les bateaux passent entre le bateau comité signalant le changement et la marque la plus proche, en la laissant du côté requis (modifie RCV 28).</p>
+
+  <h3 class="regle-titre">14. L'arrivée</h3>
+  <p>14.1 La ligne d'arrivée est entre un mât à pavillon bleu et le côté parcours de la marque d'arrivée.</p>
+  <p>14.2 [DP] Si le comité est absent à l'arrivée d'un bateau, celui-ci doit déclarer son heure d'arrivée et sa position relative dès que possible.</p>
+
+  <h3 class="regle-titre">15. Système de pénalité</h3>
+  <p>15.1 Pour tous les groupes, la pénalité de deux tours (RCV 44.1) est remplacée par une pénalité d'un tour.</p>
+  <p>15.2 Quand le chapitre 2 des RCV est remplacé par le RIPAM partie B section II, la RCV 44.1 ne s'applique pas.</p>
+  <p>15.3 [DP] Une infraction hors chapitre 2 et hors RCV 28/31 peut être sanctionnée d'une pénalité inférieure à une disqualification.</p>
+
+  <h3 class="regle-titre">16. Temps cible et temps limites</h3>
+  <p>16.1 Sauf parcours construits et course de nuit : DNF au-delà de l'heure du coucher du soleil (21h45, modifie RCV 35, A5.1, A5.2). Parcours construits : DNF au-delà de 45 min après l'arrivée du 1<sup>er</sup> de la série. Course de nuit : DNF après 12h le lendemain du départ.</p>
+
+  <h3 class="regle-titre">17. Demandes d'instruction</h3>
+  <p>17.1 Délai de réclamation : 60 minutes après l'arrivée du dernier bateau ou l'annonce de fin de course du jour. Instructions aux escales de Lanildut, Douarnenez et Port la Forêt.</p>
+  <p>17.2 Formulaires disponibles au secrétariat du jury (car podium de chaque étape).</p>
+  <p>17.3 Avis publiés au plus tard 30 min après le délai de réclamation.</p>
+
+  <h3 class="regle-titre">18. Classement</h3>
+  <p>18.1 Une course doit être validée pour valider la compétition.</p>
+  <p>18.2 Coefficients : 1 par défaut, 0,5 pour la course inshore, 1,5 pour la course de nuit.</p>
+  <p>18.3 Classement au temps compensé (Osiris ou IRC, CVL non pris en compte en Osiris), en heures/minutes/secondes/1<sup>er</sup> centième. Toutes les courses comptent pour le classement général. Égalités départagées d'abord sur la course de nuit, puis annexe A8 des RCV.</p>
+  <p>18.4 Coefficients de temps compensé affichés au tableau officiel à Roscoff, au plus tard 1h avant le départ de la première course.</p>
+  <p>18.5 Classements distincts par groupe, plus : Trophée Tour du Finistère (pondéré K = points obtenus / nombre d'inscrits du groupe), Classement des Clubs, Classement Monotypes (flotte ≥ 5 bateaux), Classement Jeunes (≥ 50 % de moins de 26 ans), Classement Mixte (≥ 50 % de femmes).</p>
+
+  <h3 class="regle-titre">19. Règles de sécurité</h3>
+  <p>19.1 [DP] [NP] VHF canal 77, veille obligatoire (double veille 16/77 demandée). Équipement individuel de flottabilité obligatoire du ponton de départ à l'arrivée (retrait possible pour se changer en cabine). À environ 2 milles de l'arrivée, les premiers concurrents en temps réel s'annoncent au comité sur le 77.</p>
+  <p style="background:#FBEAF0; border-radius:6px; padding:10px 12px;"><strong>Urgence</strong> — May Day / Pan Pan / Sécurité : procédure réglementaire canal 16. Si VHF défectueuse : Comité de Course 07 87 81 27 96, Cross Corsen 02 98 89 31 31 ou 196 (à réserver aux cas d'urgence réelle).</p>
+  <p>Harnais de sécurité recommandés par vent fort et lors de la course de nuit. Avant l'étape de nuit : flash lights, VHF, feu à retournement de la bouée fer à cheval et batteries à vérifier. AIS en veille pendant la course de nuit.</p>
+  <p>19.2 [DP] [NP] Tout abandon doit être signalé au comité dès que possible (VHF 77 ou 07 87 81 27 96), pavillon de course affalé, déclaration écrite à remettre ensuite.</p>
+  <p>19.3 Sortie du bout-dehors autorisée uniquement pour établir et porter le spinnaker (sauf règles de classe contraires).</p>
+
+  <h3 class="regle-titre">20. Remplacement de concurrent ou d'équipement</h3>
+  <p>20.1 [DP] Liste d'équipage à déposer avant 19h dimanche 26 juillet (licences FFV 2026, certificat médical, autorisation parentale pour mineurs). Modification en cours d'épreuve : demande écrite au président du comité de course avant le signal d'avertissement de l'étape concernée.</p>
+  <p>20.2 Minimum 3 personnes à bord par étape (sauf IRC Double), dans la limite des places du radeau de survie et de l'acte de francisation.</p>
+  <p>20.3 [DP] Remplacement de matériel endommagé ou perdu soumis à l'approbation du comité technique ou de course.</p>
+
+  <h3 class="regle-titre">21. Contrôles de jauge et d'équipement</h3>
+  <p>21.1 Un bateau ou son équipement peut être contrôlé à tout moment pour vérifier sa conformité.</p>
+  <p>21.2 [DP] Sur l'eau, le comité technique peut demander de rejoindre immédiatement une zone de contrôle.</p>
+  <p>21.3 [DP] Conformité requise 75 minutes avant le signal d'avertissement.</p>
+  <p>21.4 Pour la classe Osiris, règle C.10.4.2.2 applicable à la course de nuit : un spi symétrique ou asymétrique supplémentaire sans malus de dimension est autorisé, marqué par le comité technique.</p>
+  <p>21.5 [DP] Le même jeu de voiles doit être embarqué pour toute la durée de l'épreuve.</p>
+
+  <h3 class="regle-titre">22. Bateaux officiels</h3>
+  <p>Bateau comité : pavillon « FF Voile Arbitre ». Bateaux commissaires : flamme « FF Voile ». Bateau jury : pavillon jaune sigle Jury en bleu.</p>
+
+  <h3 class="regle-titre">23. Accompagnateurs</h3>
+  <p>23.1 [DP] [NP] Hors des zones de course du signal préparatoire de la première classe jusqu'à ce que tous les bateaux aient fini, abandonné, ou qu'un retard/rappel général/annulation soit signalé.</p>
+  <p>23.2 [DP] [NP] Identification par pavillon CDV29 obligatoire.</p>
+  <p>23.3 Réglementation FFVoile sur les accompagnateurs applicable.</p>
+  <p>23.4 [DP] [NP] À bord : gilets CE (mini 50N) portés en permanence, VHF, couteau, ancre et ligne de mouillage adaptée, bout de remorquage flottant (10 mm × 15 m), coupe-circuit connecté au pilote moteur en marche (second coupe-circuit filaire accessible, Division 240 2023). Respect des limitations de vitesse locales.</p>
+
+  <h3 class="regle-titre">24. Évacuation des détritus</h3>
+  <p>Les détritus peuvent être placés à bord des bateaux officiels et/ou accompagnateurs.</p>
+
+  <h3 class="regle-titre">25. Emplacements</h3>
+  <p>[DP] [NP] Les bateaux restent à la place attribuée au port.</p>
+
+  <h3 class="regle-titre">26. Limitations de sortie de l'eau</h3>
+  <p>[DP] [NP] Sortie de l'eau interdite pendant la régate sauf autorisation écrite préalable du comité de course ou technique.</p>
+
+  <h3 class="regle-titre">27. Équipements de plongée et housses sous-marines de protection</h3>
+  <p>27.1 [DP] [NP] Usage lié à la réglementation locale ; appareils de respiration sous-marine et housses interdits à proximité de quillards entre le signal préparatoire de la première course et la fin de la dernière.</p>
+  <p>27.2 [DP] [NP] Nettoyage des quillards sous la ligne de flottaison interdit pendant l'épreuve, quel que soit le moyen.</p>
+
+  <h3 class="regle-titre">28. Prix</h3>
+  <p>Prix distribués par groupe de classement selon l'IC 18.5.</p>
+
+  <p style="font-size:11.5px; color:var(--text-muted); margin-top:16px;"><strong>Arbitres désignés</strong> — Président du comité de course : Eric Bournot. Comités adjoints : Godelieve Blanckaert, Michel Le Mer, Michel Tarsiguel, Christian Leaustic. Président du comité technique : Bruno Le Breton (adjoint : Christian Cariou). Président du jury : Laurent Remy (juges adjoints : Cécile Tymen Le Floch, Bruno Le Maître). Commissaire aux résultats : Maryse Hillion.</p>
+
+  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  </section>
+
+  <section class="ic-section" id="zones">
+  <h2>Annexe Zones de course</h2>
+  <p>Zones couvertes par les cartes marines SHOM conseillées : 7150, 6930, 7151, 7031, 7146, 7066, 7147, 7148, 7177, 6680, 7149 A.</p>
+  <div class="placeholder-image">Carte des zones de course — image à ajouter dans une prochaine mise à jour (IC p.11)</div>
+  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  </section>
+
+  <section class="ic-section" id="parcours">
+  <h2>Annexe Parcours</h2>
+  <p style="font-size:11.5px; color:var(--text-muted);">Positions données à titre indicatif (erreur non susceptible de réparation). En cas de différence avec les schémas, les tableaux ci-dessous priment (IC art. 9.7). Croquis de parcours : image à ajouter dans une prochaine mise à jour.</p>
+
+  <h4 class="course-titre" id="course-1">Course 1 — Lundi 27 juillet 2026 : Roscoff → Aber Wrac'h</h4>
+  <p class="meta-course">35 milles · 1er signal d'avertissement : 9h30 · Zone de départ : Nord Le Menk</p>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Roscoff</td><td>IC 12.1</td><td>48°43,598 N 003°56,686 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>N°2 Roscoff</td><td>Contourner Bâb,</td><td>48°44,305 N 003°56,250 W</td></tr>
+      <tr><td>2</td><td>Basse Astan</td><td>Contourner Bâb,</td><td>48°44,910 N 003°57,700 W</td></tr>
+      <tr><td>3</td><td>Le Taureau</td><td>Laisser Bâb,</td><td>48°45,575 N 003°59,350 W</td></tr>
+      <tr><td>4</td><td>Grande Basse</td><td>Laisser Bâb,</td><td>48°46,035 N 004°01,645 W</td></tr>
+      <tr><td>5</td><td>Basse Toullcoz</td><td>Contourner Trib,</td><td>48°41,410 N 004°19,250 W</td></tr>
+      <tr><td>6</td><td>Lizen Ven</td><td>Laisser Bâb,</td><td>48°40,615 N 004°33,465 W</td></tr>
+      <tr><td>7</td><td>Libenter</td><td>Contourner Bâb,</td><td>48°37,440 N 004°38,500 W</td></tr>
+      <tr><td>8</td><td>Petit Pot de Beurre</td><td>Laisser Bâb,</td><td>48°37,130 N 004°36,235 W</td></tr>
+      <tr><td>9</td><td>Arrivée Aber Wrac'h</td><td>Voir IC 14.1</td><td>48°36,010 N 004°33,865 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+
+  <h4 class="course-titre" id="course-2">Course 2 — Mardi 28 juillet 2026 : Aber Wrac'h → Lanildut</h4>
+  <p class="meta-course">1er signal d'avertissement : 9h30 · Zone de départ : Nord de la Tourelle Bréac'h Ver</p>
+  <h5 class="parcours-titre">Parcours N°1 — 25 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Aber Wrac'h</td><td>IC 12.1</td><td>&nbsp;</td><td>48°36,890 N 004°35,410 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Petit Pot de Beurre</td><td>Laisser Trib,</td><td>Card Est</td><td>48°37,130 N 004°36,235 W</td></tr>
+      <tr><td>2</td><td>Libenter</td><td>Laisser Trib,</td><td>Card Ouest</td><td>48°37,440 N 004°38,500 W</td></tr>
+      <tr><td>3</td><td>Petite Fourche</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>48°36,945 N 004°38,810 W</td></tr>
+      <tr><td>4</td><td>Basse Paupian</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>48°35,280 N 004°46,275 W</td></tr>
+      <tr><td>5</td><td>Le Four</td><td>Laisser Bâb,</td><td>Phare</td><td>48°31,375 N 004°48,340 W</td></tr>
+      <tr><td>6</td><td>Les Liniou</td><td>Laisser Bâb,</td><td>Roches</td><td>48°29,210 N 004°48,625 W</td></tr>
+      <tr><td>7</td><td>La Valbelle</td><td>Contourner Trib,</td><td>Lat R</td><td>48°26,160 N 004°50,020 W</td></tr>
+      <tr><td>8</td><td>Plâtresses SE</td><td>Laisser Trib,</td><td>Lat G</td><td>48°25,685 N 004°50,520 W</td></tr>
+      <tr><td>9</td><td>La Luronne</td><td>Contourner Trib,</td><td>Card Ouest</td><td>48°26,330 N 004°53,770 W</td></tr>
+      <tr><td>10</td><td>Plâtresses Nord</td><td>Laisser Trib,</td><td>Lat G</td><td>48°26,195 N 004°50,715 W</td></tr>
+      <tr><td>11</td><td>Pierre de l'Aber</td><td>Laisser Trib,</td><td>Lat G</td><td>48°27,970 N 004°47,240 W</td></tr>
+      <tr><td>12</td><td>Arrivée Lanildut</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°28,160 N 004°46,645 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h5 class="parcours-titre">Parcours N°2 — 25 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Départ Aber Wrac'h</td><td>IC 12.1</td><td>&nbsp;</td><td>48°36,890 N 004°35,410 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Petit Pot de Beurre</td><td>Laisser Trib,</td><td>Card Est</td><td>48°37,130 N 004°36,235 W</td></tr>
+      <tr><td>2</td><td>Libenter</td><td>Laisser Trib,</td><td>Card Ouest</td><td>48°37,440 N 004°38,500 W</td></tr>
+      <tr><td>3</td><td>Petite Fourche</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>48°36,945 N 004°38,810 W</td></tr>
+      <tr><td>4</td><td>Basse Paupian</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>48°35,280 N 004°46,275 W</td></tr>
+      <tr><td>5</td><td>Le Four</td><td>Laisser Bâb,</td><td>Phare</td><td>48°31,375 N 004°48,340 W</td></tr>
+      <tr><td>6</td><td>Les Liniou</td><td>Laisser Bâb,</td><td>Roches</td><td>48°29,210 N 004°48,625 W</td></tr>
+      <tr><td>7</td><td>La Luronne</td><td>Contourner Bâb,</td><td>Card Ouest</td><td>48°26,330 N 004°53,770 W</td></tr>
+      <tr><td>8</td><td>Basse Saint Paul</td><td>Contourner Bâb,</td><td>Lat R</td><td>48°24,815 N 004°49,170 W</td></tr>
+      <tr><td>9</td><td>La Valbelle</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°26,160 N 004°50,020 W</td></tr>
+      <tr><td>10</td><td>Plateau des Fourches</td><td>Laisser Trib,</td><td>Roches</td><td>48°27,015 N 004°48,630 W</td></tr>
+      <tr><td>11</td><td>Pierre de l'Aber</td><td>Contourner Trib,</td><td>Lat G</td><td>48°27,970 N 004°47,240 W</td></tr>
+      <tr><td>12</td><td>Arrivée Lanildut</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°28,160 N 004°46,645 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h5 class="parcours-titre">Parcours N°3 — 31 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Départ Aber Wrac'h</td><td>Contourner</td><td>&nbsp;</td><td>48°36,890 N 004°35,410 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>2</td><td>Petit Pot de Beurre</td><td>Laisser Trib,</td><td>Card Est</td><td>48°37,130 N 004°36,235 W</td></tr>
+      <tr><td>3</td><td>Libenter</td><td>Laisser Trib,</td><td>Card Ouest</td><td>48°37,440 N 004°38,500 W</td></tr>
+      <tr><td>4</td><td>Petite Fourche</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>48°36,945 N 004°38,810 W</td></tr>
+      <tr><td>5</td><td>Basse Paupian</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>48°35,280 N 004°46,275 W</td></tr>
+      <tr><td>6</td><td>Le Four</td><td>Laisser Bâb,</td><td>Phare</td><td>48°31,375 N 004°48,340 W</td></tr>
+      <tr><td>7</td><td>Les Liniou</td><td>Laisser Bâb,</td><td>Roches</td><td>48°29,469 N 004°48,766 W</td></tr>
+      <tr><td>8</td><td>Saint Pierre</td><td>Contourner Trib,</td><td>Lat G</td><td>48°23,070 N 004°49,079 W</td></tr>
+      <tr><td>9</td><td>Plâtresses SE</td><td>Laisser Bâb,</td><td>Lat G</td><td>48°25,975 N 004°50,517 W</td></tr>
+      <tr><td>10</td><td>La Valbelle</td><td>Contourner Bâb,</td><td>Lat R</td><td>48°26,428 N 004°50,029 W</td></tr>
+      <tr><td>11</td><td>Plâtresses Nord</td><td>Laisser Bâb,</td><td>Lat G</td><td>48°26,471 N 004°50,725 W</td></tr>
+      <tr><td>12</td><td>La Luronne</td><td>Contourner Trib,</td><td>Card Ouest</td><td>48°26,620 N 004°53,780 W</td></tr>
+      <tr><td>13</td><td>Pierre de l'Aber</td><td>Laisser Trib,</td><td>Lat G</td><td>48°27,970 N 004°47,240 W</td></tr>
+      <tr><td>14</td><td>Arrivée Lanildut</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°28,160 N 004°46,645 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+
+  <h4 class="course-titre" id="course-3">Course 3 — Mercredi 29 juillet 2026 : Lanildut → Camaret-sur-Mer</h4>
+  <p class="meta-course">1er signal d'avertissement : 9h30 · Zone de départ : Ouest de Le Lieu</p>
+  <h5 class="parcours-titre">Parcours N°1 — 26 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Lanildut</td><td>IC 12.1</td><td>&nbsp;</td><td>48°28,200 N 004°46,870 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Pierre de l'Aber</td><td>Laisser Bâb,</td><td>Lat G</td><td>48°27,970 N 004°47,240 W</td></tr>
+      <tr><td>2</td><td>Plateau des Fourches</td><td>Laisser Bâb,</td><td>Roches</td><td>48°27,015 N 004°48,630 W</td></tr>
+      <tr><td>3</td><td>La Valbelle</td><td>Contourner Bâb,</td><td>Lat R</td><td>48°26,430 N 004°50,030 W</td></tr>
+      <tr><td>4</td><td>Plâtresses SE</td><td>Laisser Trib,</td><td>Lat G</td><td>48°25,975 N 004°50,520 W</td></tr>
+      <tr><td>5</td><td>Basse Saint Paul</td><td>Contourner Trib,</td><td>Lat R</td><td>48°24,815 N 004°49,170 W</td></tr>
+      <tr><td>6</td><td>Saint Pierre</td><td>Contourner Bâb,</td><td>Lat G</td><td>48°23,070 N 004°49,080 W</td></tr>
+      <tr><td>7</td><td>Grand Courleau</td><td>Laisser Trib,</td><td>Card Nord</td><td>48°22,100 N 004°50,475 W</td></tr>
+      <tr><td>8</td><td>Grande Vinotière</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°21,645 N 004°48,400 W</td></tr>
+      <tr><td>9</td><td>Vieux Moines</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°19,330 N 004°46,640 W</td></tr>
+      <tr><td>10</td><td>Basse du Chenal</td><td>Laisser Trib,</td><td>Lat G</td><td>48°19,010 N 004°48,030 W</td></tr>
+      <tr><td>11</td><td>Vandrée</td><td>Contourner Bâb,</td><td>Card Ouest</td><td>48°15,225 N 004°48,210 W</td></tr>
+      <tr><td>12</td><td>Basse du Lis</td><td>Contourner Bâb,</td><td>Card Sud</td><td>48°12,990 N 004°44,525 W</td></tr>
+      <tr><td>13</td><td>Pelen</td><td>Laisser Trib,</td><td>Card Sud</td><td>48°15,655 N 004°39,580 W</td></tr>
+      <tr><td>14</td><td>Mendufa</td><td>Laisser Trib,</td><td>Card Nord</td><td>48°16,050 N 004°39,425 W</td></tr>
+      <tr><td>15</td><td>Petit Leac'h</td><td>Laisser Bâb,</td><td>Card Sud</td><td>48°16,260 N 004°39,795 W</td></tr>
+      <tr><td>16</td><td>La Louve</td><td>Laisser Trib,</td><td>Card Ouest</td><td>48°16,785 N 004°38,0330 W</td></tr>
+      <tr><td>17</td><td>Pointe du Grand Grouin</td><td>Laisser Trib,</td><td>Roches</td><td>48°17,325 N 004°36,050 W</td></tr>
+      <tr><td>18</td><td>Arrivée Camaret</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°16,930 N 004°35,200 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h5 class="parcours-titre">Parcours N°2 — 20 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Lanildut</td><td>IC 12.1</td><td>&nbsp;</td><td>48°28,200 N 004°46,870 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Pierre de l'Aber</td><td>Laisser Bâb,</td><td>Lat G</td><td>48°27,970 N 004°47,240 W</td></tr>
+      <tr><td>2</td><td>Plateau des Fourches</td><td>Laisser Bâb,</td><td>Roches</td><td>48°27,015 N 004°48,630 W</td></tr>
+      <tr><td>3</td><td>Grand Courleau</td><td>Laisser Trib,</td><td>Card Nord</td><td>48°22,100 N 004°50,475 W</td></tr>
+      <tr><td>4</td><td>Grande Vinotière</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°21,645 N 004°48,400 W</td></tr>
+      <tr><td>5</td><td>Vieux Moines</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°19,330 N 004°46,640 W</td></tr>
+      <tr><td>6</td><td>Basse du Chenal</td><td>Laisser Trib,</td><td>Lat G</td><td>48°19,010 N 004°48,030 W</td></tr>
+      <tr><td>7</td><td>Le Coq</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°19,075 N 004°43,989 W</td></tr>
+      <tr><td>8</td><td>Charles Martel</td><td>Contourner Trib,</td><td>Lat R</td><td>48°18,955 N 004°41,905 W</td></tr>
+      <tr><td>9</td><td>Le Trépied</td><td>Contourner Bâb,</td><td>Lat G</td><td>48°16,750 N 004°41,500 W</td></tr>
+      <tr><td>10</td><td>Pointe du Grand Grouin</td><td>Laisser Trib,</td><td>Roches</td><td>48°17,325 N 004°36,050 W</td></tr>
+      <tr><td>11</td><td>Arrivée Camaret</td><td>Voir IC 14,1</td><td>&nbsp;</td><td>48°16,930 N 004°35,200 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h5 class="parcours-titre">Parcours N°3 — 28 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Départ Lanildut</td><td>IC 12.1</td><td>&nbsp;</td><td>48°28,200 N 004°46,870 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>2</td><td>Pierre de l'Aber</td><td>Laisser Bâb,</td><td>Lat G</td><td>48°27,970 N 004°47,240 W</td></tr>
+      <tr><td>3</td><td>Plateau des Fourches</td><td>Laisser Bâb,</td><td>Roches</td><td>48°27,015 N 004°48,630 W</td></tr>
+      <tr><td>4</td><td>La Valbelle</td><td>Contourner Bâb,</td><td>Lat R</td><td>48°26,430 N 004°50,030 W</td></tr>
+      <tr><td>5</td><td>Grande Vinotière</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°21,645 N 004°48,400 W</td></tr>
+      <tr><td>6</td><td>Vieux Moines</td><td>Laisser Bâb,</td><td>Lat R</td><td>48°19,330 N 004°46,640 W</td></tr>
+      <tr><td>7</td><td>Basse du Chenal</td><td>Contourner Bâb,</td><td>Lat G</td><td>48°19,010 N 004°48,030 W</td></tr>
+      <tr><td>8</td><td>Basse du Lis</td><td>Contourner Bâb,</td><td>Card Sud</td><td>48°12,990 N 004°44,525 W</td></tr>
+      <tr><td>9</td><td>La Parquette</td><td>Contourner Trib,</td><td>Tourelle</td><td>48°15,925 N 004°44,305 W</td></tr>
+      <tr><td>10</td><td>Charles Martel</td><td>Contourner Trib,</td><td>Lat R</td><td>48°18,955 N 004°41,905 W</td></tr>
+      <tr><td>11</td><td>Pointe du Grand Grouin</td><td>Laisser Trib,</td><td>Roches</td><td>48°17,325 N 004°36,050 W</td></tr>
+      <tr><td>12</td><td>Arrivée Camaret</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°16,930 N 004°35,200 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+
+  <h4 class="course-titre" id="course-4">Course 4 — Jeudi 30 juillet 2026 : Camaret-sur-Mer → Douarnenez</h4>
+  <p class="meta-course">1er signal d'avertissement : 9h30 · Zone de départ : Nord du môle</p>
+  <h5 class="parcours-titre">Parcours N°1 — 33 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Camaret</td><td>Voir IC 12.1</td><td>&nbsp;</td><td>48°17,465 N 004°34,880 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Pointe du Grand Grouin</td><td>Laisser Bâb,</td><td>Roches</td><td>48°17,325 N 004°36,050 W</td></tr>
+      <tr><td>2</td><td>Le Trépied</td><td>Laisser Bâb,</td><td>Lat G</td><td>48°16,750 N 004°41,500 W</td></tr>
+      <tr><td>3</td><td>La Parquette</td><td>Contourner Bâb,</td><td>Tourelle</td><td>48°15,925 N 004°44,305 W</td></tr>
+      <tr><td>4</td><td>Basse du Lis</td><td>Contourner Bâb,</td><td>Card Sud</td><td>48°12,990 N 004°44,525 W</td></tr>
+      <tr><td>5</td><td>Basse Jaune</td><td>Contourner Bâb,</td><td>Danger Isolé</td><td>48°04,710 N 004°42,440 W</td></tr>
+      <tr><td>6</td><td>Arrivée Douarnenez</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°06,360 N 004°20,575 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h5 class="parcours-titre">Parcours N°2 — 30 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Camaret</td><td>Voir IC 12.1</td><td>&nbsp;</td><td>48°17,465 N 004°34,880 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Pointe du Grand Grouin</td><td>Laisser Bâb,</td><td>Roches</td><td>48°17,325 N 004°36,050 W</td></tr>
+      <tr><td>2</td><td>Petit Leac'h</td><td>Laisser Trib,</td><td>Card Sud</td><td>48°16,262 N 004°39,795 W</td></tr>
+      <tr><td>3</td><td>Mendufa</td><td>Laisser Bâb,</td><td>Card Nord</td><td>48°16,050 N 004°39,425 W</td></tr>
+      <tr><td>4</td><td>Pelen</td><td>Laisser Bâb,</td><td>Card Sud</td><td>48°15,655 N 004°39,580 W</td></tr>
+      <tr><td>5</td><td>Basse du Lis</td><td>Contourner Bâb,</td><td>Card Sud</td><td>48°12,990 N 004°44,525 W</td></tr>
+      <tr><td>6</td><td>Basse Vieille</td><td>Contourner Bâb,</td><td>Danger Isolé</td><td>48°08,235 N 004°35,750 W</td></tr>
+      <tr><td>7</td><td>La Pierre Profonde</td><td>Contourner Trib,</td><td>Roches</td><td>48°12,357 N 004°27,223 W</td></tr>
+      <tr><td>8</td><td>Arrivée Douarnenez</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°06,360 N 004°20,575 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h5 class="parcours-titre">Parcours N°3 — 26 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Camaret</td><td>Voir IC 12.1</td><td>&nbsp;</td><td>48°17,463 N 004°34,882 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>Pointe du Grand Grouin</td><td>Laisser Bâb,</td><td>Roches</td><td>48°17,323 N 004°36,049 W</td></tr>
+      <tr><td>2</td><td>La Louve</td><td>Contourner Bâb,</td><td>Card Ouest</td><td>48°16,784 N 004°38,027 W</td></tr>
+      <tr><td>3</td><td>Pelen</td><td>Laisser Trib,</td><td>Card Sud</td><td>48°15,655 N 004°39,578 W</td></tr>
+      <tr><td>4</td><td>Basse du Lis</td><td>Contourner Trib,</td><td>Card Sud</td><td>48°12,990 N 004°44,525 W</td></tr>
+      <tr><td>5</td><td>Basse Vieille</td><td>Contourner Trib,</td><td>Danger Isolé</td><td>48°08,233 N 004°35,747 W</td></tr>
+      <tr><td>6</td><td>Arrivée Douarnenez</td><td>Voir IC 14.1</td><td>&nbsp;</td><td>48°06,360 N 004°20,575 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="placeholder-image" style="margin-top:4px;">Extrait de carte marine complémentaire (zone Camaret / Baie de Douarnenez) — image à ajouter dans une prochaine mise à jour (IC p.18)</p>
+  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+
+  <h4 class="course-titre" id="course-5">Course 5 — Vendredi 31 juillet 2026 : Douarnenez (parcours construit)</h4>
+  <p class="meta-course">1er signal d'avertissement : 13h00 · Zone de départ : Nord de l'Île Tristan</p>
+  <p><strong>Séquence du parcours construit :</strong> Départ – 1 – 2 – Porte 3 – 1 – 2 – 3B – Arrivée</p>
+  <p>Les bouées 1, 2 et 3B sont à contourner à bâbord.</p>
+  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+
+  <h4 class="course-titre" id="course-6">Course 6 — Vendredi 31 juillet 2026 : Douarnenez → Port la Forêt (course de nuit)</h4>
+  <p class="meta-course">1er signal d'avertissement : 17h00 · Zone de départ : Nord de l'Île Tristan</p>
+  <h5 class="parcours-titre">Parcours N°1 — 82 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Douarnenez</td><td>IC 12.1</td><td>&nbsp;</td><td>48°07,130 N 004°20,330 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>La Plate</td><td>Contourner Bâb,</td><td>Card Ouest</td><td>48°02,375 N 004°45,585 W</td></tr>
+      <tr><td>2</td><td>Cap Caval</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>47°46,485 N 004°22,770 W</td></tr>
+      <tr><td>3</td><td>Spineg</td><td>Laisser Bâb,</td><td>Card Sud</td><td>47°45,230 N 004°18,905 W</td></tr>
+      <tr><td>4</td><td>Basse Perennès</td><td>Contourner Trib,</td><td>Card Ouest</td><td>47°41,030 N 004°06,215 W</td></tr>
+      <tr><td>5</td><td>Jument de Glénan</td><td>Contourner Bâb,</td><td>Card Sud</td><td>47°38,810 N 004°01,375 W</td></tr>
+      <tr><td>6</td><td>Basse an Ero</td><td>Laisser Bâb,</td><td>Card Sud</td><td>47°40,390 N 003°55,450 W</td></tr>
+      <tr><td>7</td><td>Jaune de Glénan</td><td>Contourner Bâb,</td><td>Card Est</td><td>47°42,590 N 003°49,815 W</td></tr>
+      <tr><td>8</td><td>La Voleuse</td><td>Contourner Trib,</td><td>&nbsp;</td><td>47°48,720 N 004°02,500 W</td></tr>
+      <tr><td>9</td><td>Linuen</td><td>Contourner Bâb,</td><td>&nbsp;</td><td>47°50,750 N 003°57,285 W</td></tr>
+      <tr><td>10</td><td>Arrivée Port la Forêt</td><td>IC 14.1</td><td>&nbsp;</td><td>47°52,520 N 003°58,015 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h5 class="parcours-titre">Parcours N°2 — 67 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Type</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>Départ</td><td>Douarnenez</td><td>IC 12.1</td><td>&nbsp;</td><td>48°07,130 N 004°20,330 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>1</td><td>La Plate</td><td>Contourner Bâb,</td><td>Card Ouest</td><td>48°02,374 N 004°45,583 W</td></tr>
+      <tr><td>2</td><td>Cap Caval</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>47°46,485 N 004°22,770 W</td></tr>
+      <tr><td>3</td><td>Spineg</td><td>Laisser Bâb,</td><td>Card Sud</td><td>47°45,230 N 004°18,905 W</td></tr>
+      <tr><td>4</td><td>Basse Perennès</td><td>Contourner Bâb,</td><td>Card Ouest</td><td>47°41,030 N 004°06,215 W</td></tr>
+      <tr><td>5</td><td>Les Bluiniers</td><td>Laisser Trib,</td><td>Card Ouest</td><td>47°43,380 N 004°03,830 W</td></tr>
+      <tr><td>6</td><td>Rouge de Glénan</td><td>Laisser Bâb,</td><td>Card Ouest</td><td>47°45,475 N 004°03,980 W</td></tr>
+      <tr><td>7</td><td>Pourceaux</td><td>Laisser Trib,</td><td>Card Nord</td><td>47°46,035 N 004°00,805 W</td></tr>
+      <tr><td>8</td><td>Ile aux Moutons</td><td>Contourner Bâb,</td><td>Roches</td><td>47°46,475 N 004°01,660 W</td></tr>
+      <tr><td>9</td><td>La Voleuse</td><td>Contourner Trib,</td><td>Card Sud</td><td>47°48,720 N 004°02,500 W</td></tr>
+      <tr><td>10</td><td>Linuen</td><td>Contourner Bâb,</td><td>Card Est</td><td>47°50,750 N 003°57,290 W</td></tr>
+      <tr><td>11</td><td>Arrivée Port la Forêt</td><td>IC 14.1</td><td>&nbsp;</td><td>47°52,520 N 003°58,015 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h5 class="parcours-titre">Parcours N°3 — 62 MN</h5>
+  <div class="table-scroll">
+  <table class="waypoints">
+    <thead><tr><th>Ordre</th><th>Waypoint</th><th>Côté</th><th>Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Départ Douarnenez</td><td>IC 12.1</td><td>48°07,130 N 004°20,330 W</td></tr>
+      <tr><td>—</td><td>Bouée de dégagement éventuelle</td><td>Voir IC 9.3</td><td>&nbsp;</td></tr>
+      <tr><td>2</td><td>La Plate</td><td>Contourner Bâb,</td><td>48°02,375 N 004°45,585 W</td></tr>
+      <tr><td>3</td><td>Cap Caval</td><td>Laisser Bâb,</td><td>47°46,485 N 004°22,770 W</td></tr>
+      <tr><td>4</td><td>Spineg</td><td>Laisser Bâb,</td><td>47°45,230 N 004°18,905 W</td></tr>
+      <tr><td>5</td><td>Ar Guisty</td><td>Laisser Bâb,</td><td>47°45,640 N 004°15,580 W</td></tr>
+      <tr><td>6</td><td>Rouge de Glénan</td><td>Contourner Bâb,</td><td>47°45,475 N 004°03,980 W</td></tr>
+      <tr><td>7</td><td>Pourceaux</td><td>Laisser Trib,</td><td>47°46,035 N 004°00,805 W</td></tr>
+      <tr><td>8</td><td>Ile aux Moutons</td><td>Laisser Bâb,</td><td>47°46,475 N 004°01,660 W</td></tr>
+      <tr><td>9</td><td>Linuen</td><td>Contourner Bâb,</td><td>47°50,750 N 003°57,290 W</td></tr>
+      <tr><td>10</td><td>Arrivée Port la Forêt</td><td>IC 14.1</td><td>47°52,520 N 003°58,015 W</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <a class="retour-sommaire" href="#parcours">Retour au sommaire</a>
+  </section>
+
+  <section class="ic-section" id="pointage">
+  <h2>Annexe Pointage officiel à une marque</h2>
+  <p>Le comité de course peut interrompre une course selon l'une des causes prévues par la RCV 32.1 et la valider en prenant pour ordre d'arrivée le dernier pointage officiel à une des marques précisées en annexe Parcours (modifie la RCV 32).</p>
+  <p>Si un bateau du comité arborant le 2<sup>ème</sup> substitut et le pavillon de classe des séries concernées se tient près d'une des marques précisées, l'ensemble marque et bateau comité constitue une porte où un pointage officiel est effectué. Les bateaux devront passer cette porte et continuer leur course.</p>
+  <p>Si le comité décide ensuite d'interrompre la course, il arborera les pavillons S sur H avec deux signaux sonores et, si nécessaire, le pavillon de classe des séries concernées, signifiant : « La course est interrompue et le dernier pointage officiel sera pris en compte comme ordre d'arrivée. Le comité de course confirmera, si possible, ces indications par VHF. »</p>
+  <p>La porte où le dernier pointage officiel a été effectué devient alors la ligne d'arrivée pour les classes concernées. Si un incident pouvant donner lieu à réclamation survient entre le passage de cette ligne et l'interruption signalée, aucun bateau ne peut être pénalisé pour une infraction au chapitre 2, sauf RCV 14 (blessure ou dommage sérieux) ou RCV 23.1.</p>
+  <p>Un pointage officiel peut être effectué aux marques « à contourner » signalées en annexe Parcours.</p>
+  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  </section>
+
+  <section class="ic-section" id="marees">
+  <h2>Annexe Heures des marées/étapes</h2>
+  <div class="placeholder-image">Tableau des heures de marée par étape — image à ajouter dans une prochaine mise à jour (IC p.23-24, aucun texte extractible à la source)</div>
+  <a class="retour-sommaire" href="#regles">Retour au sommaire</a>
+  </section>
+
+</div>
+
+<script src="js/app-commun.js"></script>
+<script>
+(function () {
+  'use strict';
+  var banniere = document.getElementById('banniere-test');
+  if (AppCommun.estModeTestActif()) {
+    banniere.classList.remove('hidden');
+    banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
+  }
+})();
+</script>
+</body>
+</html>
