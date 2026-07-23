@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filifer — Tour du Finistère 2026</title>
+<style>
+  :root{
+    --blue:#0B4C7C;
+    --gold:#C9971F;
+    --bg:#FAFAFA;
+    --surface2:#FFFFFF;
+    --border:#E2E2E0;
+    --text-primary:#2B2A28;
+    --text-secondary:#6B6862;
+    --text-muted:#8A867F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text-primary);
+    display:flex;
+    justify-content:center;
+  }
+  .page{
+    width:380px;
+    padding:22px 20px 28px;
+  }
+  .header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:4px;
+  }
+  .brand{
+    font-size:21px;
+    font-weight:700;
+    color:var(--blue);
+    line-height:1.1;
+  }
+  .brand-sub{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  .date-line{
+    font-size:12px;
+    color:var(--text-muted);
+    text-align:right;
+    padding-top:3px;
+  }
+  .stage-card{
+    background:var(--blue);
+    color:#FFFFFF;
+    border-radius:10px;
+    padding:16px 18px;
+    margin:18px 0 24px;
+  }
+  .stage-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    opacity:0.85;
+  }
+  .stage-title{
+    font-size:18px;
+    font-weight:700;
+    margin:5px 0 3px;
+  }
+  .section-label{
+    font-size:12px;
+    color:var(--text-muted);
+    margin:0 0 10px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .grid-tiles{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .tile{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    text-decoration:none;
+    color:inherit;
+  }
+  .tile-icon{
+    width:26px;
+    height:26px;
+  }
+  .tile-label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-primary);
+    line-height:1.25;
+  }
+  .tile-tag{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    padding:2px 7px;
+    border-radius:8px;
+    align-self:flex-start;
+  }
+  .tag-static{ background:#E4EEF6; color:var(--blue); }
+  .tag-dynamic{ background:#FBF0DC; color:#8A6410; }
+  .mode-toggle{
+    display:flex;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:3px;
+    margin:16px 0 4px;
+  }
+  .mode-toggle button{
+    flex:1;
+    border:none;
+    background:transparent;
+    font-size:12px;
+    font-weight:600;
+    padding:8px 0;
+    border-radius:8px;
+    color:var(--text-muted);
+    cursor:pointer;
+  }
+  .mode-toggle button.active{
+    background:var(--blue);
+    color:#FFFFFF;
+  }
+  .test-fields{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-top:none;
+    border-radius:0 0 10px 10px;
+    padding:14px 14px 16px;
+    margin:-4px 0 20px;
+  }
+  .test-fields.hidden{ display:none; }
+  .test-fields .field{
+    margin-bottom:10px;
+  }
+  .test-fields .field.hidden{ display:none; }
+  .test-fields label{
+    font-size:11px;
+    color:var(--text-muted);
+    display:block;
+    margin-bottom:4px;
+  }
+  .test-fields input, .test-fields select{
+    width:100%;
+    padding:6px 8px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:13px;
+    font-family:inherit;
+    background:#fff;
+  }
+  .test-banner{
+    background:#FBF0DC;
+    color:#8A5A00;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+    padding:6px 10px;
+    border-radius:6px;
+    margin-bottom:2px;
+  }
+  .footer-note{
+    margin-top:20px;
+    font-size:11px;
+    color:var(--text-muted);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header-row">
+    <div>
+      <div class="brand">Filifer</div>
+      <div class="brand-sub">Tour du Finistère 2026</div>
+    </div>
+    <div class="date-line" id="date-line"></div>
+  </div>
+
+  <div class="mode-toggle">
+    <button id="btn-mode-course" type="button">Mode course</button>
+    <button id="btn-mode-test" type="button">Mode test</button>
+  </div>
+  <div class="test-fields hidden" id="test-fields">
+    <div class="test-banner">MODE TEST ACTIF</div>
+    <div class="field">
+      <label for="champ-jour">Jour simulé</label>
+      <input type="date" id="champ-jour">
+    </div>
+    <div class="field">
+      <label for="champ-heure">Heure simulée</label>
+      <input type="time" id="champ-heure">
+    </div>
+    <div class="field">
+      <label for="champ-position">Position simulée</label>
+      <select id="champ-position"></select>
+    </div>
+    <div class="field hidden" id="champ-perso-lat-wrap">
+      <label for="champ-perso-lat">Latitude</label>
+      <input type="number" step="0.0001" id="champ-perso-lat" placeholder="48.xxxx">
+    </div>
+    <div class="field hidden" id="champ-perso-lon-wrap">
+      <label for="champ-perso-lon">Longitude</label>
+      <input type="number" step="0.0001" id="champ-perso-lon" placeholder="-4.xxxx">
+    </div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-label" id="stage-label"></div>
+    <div class="stage-title" id="stage-title"></div>
+  </div>
+
+  <p class="section-label">Sommaire</p>
+  <div class="grid-tiles">
+    <a class="tile" href="voiles.html">
+      <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4C7C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="6" y1="3" x2="6" y2="21"/>
+        <path d="M6 4 L18 12 L6 15 Z"/>
+      </svg>
+      <div class="tile-label">Configuration des voiles</div>
+      <span class="tile-tag tag-static">Statique</span>
+    </a>
+
+    <a class="tile" href="instructions.html">
+      <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4C7C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="3" width="14" height="18" rx="1.5"/>
+        <line x1="8" y1="8" x2="16" y2="8"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+        <line x1="8" y1="16" x2="13" y2="16"/>
+      </svg>
+      <div class="tile-label">Instructions de course</div>
+      <span class="tile-tag tag-static">Statique</span>
+    </a>
+
+    <a class="tile" href="roadbook.html">
+      <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4C7C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5 C10.5 4 8 3.7 5 4.2 V18.2 C8 17.7 10.5 18 12 19"/>
+        <path d="M12 5 C13.5 4 16 3.7 19 4.2 V18.2 C16 17.7 13.5 18 12 19"/>
+        <line x1="12" y1="5" x2="12" y2="19"/>
+      </svg>
+      <div class="tile-label">Roadbook</div>
+      <span class="tile-tag tag-static">Statique</span>
+    </a>
+
+    <div class="tile" style="opacity:0.5;">
+      <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4C7C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 17 h10 a3.5 3.5 0 0 0 0 -7 a5 5 0 0 0 -9.6 -1.5 A4 4 0 0 0 7 17 Z"/>
+      </svg>
+      <div class="tile-label">Météo</div>
+      <span class="tile-tag tag-dynamic">Dynamique</span>
+    </div>
+
+    <div class="tile" style="opacity:0.5;">
+      <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4C7C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9 q3 -3 6 0 t6 0 t6 0"/>
+        <path d="M3 14 q3 -3 6 0 t6 0 t6 0"/>
+        <path d="M3 19 q3 -3 6 0 t6 0 t6 0"/>
+      </svg>
+      <div class="tile-label">Courants et marées</div>
+      <span class="tile-tag tag-dynamic">Dynamique</span>
+    </div>
+
+    <div class="tile" style="opacity:0.5;">
+      <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4C7C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="3" x2="5" y2="21"/>
+        <path d="M5 4 h9 l-2.2 3 L14 10 H5"/>
+        <circle cx="17" cy="17" r="2.4"/>
+      </svg>
+      <div class="tile-label">Parcours de l'étape</div>
+      <span class="tile-tag tag-dynamic">Dynamique</span>
+    </div>
+
+  </div>
+
+  <p class="footer-note">Fonctionnalités 1 à 3 disponibles hors ligne · 4 à 6 nécessitent une connexion</p>
+
+</div>
+
+<script src="js/app-commun.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+  var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+  var elDateLine = document.getElementById('date-line');
+  var elStageLabel = document.getElementById('stage-label');
+  var elStageTitle = document.getElementById('stage-title');
+  var btnCourse = document.getElementById('btn-mode-course');
+  var btnTest = document.getElementById('btn-mode-test');
+  var testFields = document.getElementById('test-fields');
+  var champJour = document.getElementById('champ-jour');
+  var champHeure = document.getElementById('champ-heure');
+  var champPosition = document.getElementById('champ-position');
+  var champPersoLatWrap = document.getElementById('champ-perso-lat-wrap');
+  var champPersoLonWrap = document.getElementById('champ-perso-lon-wrap');
+  var champPersoLat = document.getElementById('champ-perso-lat');
+  var champPersoLon = document.getElementById('champ-perso-lon');
+
+  function heureLocaleISO(date) {
+    var h = String(date.getHours()).padStart(2, '0');
+    var m = String(date.getMinutes()).padStart(2, '0');
+    return h + ':' + m;
+  }
+
+  function jourLocalISO(date) {
+    var y = date.getFullYear();
+    var m = String(date.getMonth() + 1).padStart(2, '0');
+    var j = String(date.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + j;
+  }
+
+  function remplirOptionsPosition() {
+    champPosition.innerHTML = '';
+    AppCommun.ESCALES.forEach(function (nom) {
+      var opt = document.createElement('option');
+      opt.value = nom;
+      opt.dataset.type = 'escale';
+      opt.textContent = nom;
+      champPosition.appendChild(opt);
+    });
+    var optPerso = document.createElement('option');
+    optPerso.value = '__personnalise__';
+    optPerso.dataset.type = 'personnalise';
+    optPerso.textContent = 'Personnalisé…';
+    champPosition.appendChild(optPerso);
+
+    var optIndispo = document.createElement('option');
+    optIndispo.value = '__indisponible__';
+    optIndispo.dataset.type = 'indisponible';
+    optIndispo.textContent = 'Non disponible';
+    champPosition.appendChild(optIndispo);
+  }
+
+  function positionCourante() {
+    var opt = champPosition.options[champPosition.selectedIndex];
+    var type = opt ? opt.dataset.type : 'indisponible';
+    if (type === 'escale') {
+      return { type: 'escale', valeur: opt.value };
+    }
+    if (type === 'personnalise') {
+      return {
+        type: 'personnalise',
+        valeur: { lat: parseFloat(champPersoLat.value) || null, lon: parseFloat(champPersoLon.value) || null }
+      };
+    }
+    return { type: 'indisponible', valeur: null };
+  }
+
+  function majAffichageChampsPersonnalise() {
+    var opt = champPosition.options[champPosition.selectedIndex];
+    var estPerso = opt && opt.dataset.type === 'personnalise';
+    champPersoLatWrap.classList.toggle('hidden', !estPerso);
+    champPersoLonWrap.classList.toggle('hidden', !estPerso);
+  }
+
+  function sauvegarderEtatTest() {
+    AppCommun.activerModeTest(champJour.value, champHeure.value, positionCourante());
+    rafraichirAffichage();
+  }
+
+  function activerModeCoursePanneau() {
+    AppCommun.desactiverModeTest();
+    testFields.classList.add('hidden');
+    btnCourse.classList.add('active');
+    btnTest.classList.remove('active');
+    rafraichirAffichage();
+  }
+
+  function activerModeTestPanneau() {
+    var maintenant = new Date();
+    if (!champJour.value) { champJour.value = jourLocalISO(maintenant); }
+    if (!champHeure.value) { champHeure.value = heureLocaleISO(maintenant); }
+    // Défaut sûr : position non simulée tant que l'utilisateur n'a pas choisi une escale.
+    champPosition.value = '__indisponible__';
+    majAffichageChampsPersonnalise();
+    testFields.classList.remove('hidden');
+    btnTest.classList.add('active');
+    btnCourse.classList.remove('active');
+    sauvegarderEtatTest();
+  }
+
+  function formatDateAffichage(date) {
+    return JOURS[date.getDay()] + '. ' + date.getDate() + ' ' + MOIS[date.getMonth()] + ', ' + heureLocaleISO(date);
+  }
+
+  function rafraichirAffichage() {
+    var maintenant = AppCommun.getEffectiveNow();
+    elDateLine.textContent = formatDateAffichage(maintenant);
+
+    var etape = AppCommun.getEtapeDuJour(maintenant);
+    var libelleLabel = 'Étape du jour — Course ' + etape.numero;
+    if (etape.repli === 'avant-course') { libelleLabel = 'Avant le départ — Course ' + etape.numero; }
+    if (etape.repli === 'apres-course') { libelleLabel = 'Course terminée — dernière étape'; }
+    elStageLabel.textContent = libelleLabel;
+    elStageTitle.textContent = etape.portDepart + ' → ' + etape.portArrivee;
+  }
+
+  function initialiser() {
+    remplirOptionsPosition();
+
+    var test = AppCommun.lireModeTest();
+    if (test) {
+      champJour.value = test.jour || '';
+      champHeure.value = test.heure || '';
+      if (test.position && test.position.type === 'escale') {
+        champPosition.value = test.position.valeur;
+      } else if (test.position && test.position.type === 'personnalise') {
+        champPosition.value = '__personnalise__';
+        if (test.position.valeur) {
+          champPersoLat.value = test.position.valeur.lat != null ? test.position.valeur.lat : '';
+          champPersoLon.value = test.position.valeur.lon != null ? test.position.valeur.lon : '';
+        }
+      } else {
+        champPosition.value = '__indisponible__';
+      }
+      majAffichageChampsPersonnalise();
+      testFields.classList.remove('hidden');
+      btnTest.classList.add('active');
+    } else {
+      btnCourse.classList.add('active');
+    }
+
+    btnCourse.addEventListener('click', activerModeCoursePanneau);
+    btnTest.addEventListener('click', activerModeTestPanneau);
+    champJour.addEventListener('change', sauvegarderEtatTest);
+    champHeure.addEventListener('change', sauvegarderEtatTest);
+    champPosition.addEventListener('change', function () { majAffichageChampsPersonnalise(); sauvegarderEtatTest(); });
+    champPersoLat.addEventListener('change', sauvegarderEtatTest);
+    champPersoLon.addEventListener('change', sauvegarderEtatTest);
+
+    rafraichirAffichage();
+  }
+
+  document.addEventListener('DOMContentLoaded', initialiser);
+})();
+</script>
+</body>
+</html>
