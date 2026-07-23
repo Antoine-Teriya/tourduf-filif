@@ -1,4 +1,4 @@
-// app-commun.js
+// js/app-commun.js
 // Module partagé - Application aide à la régate Tour du Finistère 2026
 // Chargé par les 7 pages (accueil + 6 fonctionnalités).
 // Fournit : gestion du mode test (sessionStorage), getEffectiveNow(), getEffectivePosition(),
