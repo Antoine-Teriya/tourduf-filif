@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadbook — Filifer</title>
+<style>
+  :root{
+    --blue:#0B4C7C;
+    --bg:#FAFAFA;
+    --surface2:#FFFFFF;
+    --border:#E2E2E0;
+    --text-primary:#2B2A28;
+    --text-muted:#8A867F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text-primary);
+    line-height:1.5;
+  }
+  .page{
+    max-width:560px;
+    margin:0 auto;
+    padding:18px 18px 40px;
+  }
+  .retour{
+    display:inline-block;
+    font-size:12px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-bottom:10px;
+  }
+  .banniere-test{
+    background:#FBF0DC;
+    color:#8A5A00;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+    padding:6px 10px;
+    border-radius:6px;
+    margin-bottom:12px;
+    cursor:pointer;
+  }
+  .banniere-test.hidden{ display:none; }
+  h1{
+    font-size:19px;
+    color:var(--blue);
+    margin:6px 0 4px;
+  }
+  .intro{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin:0 0 16px;
+    line-height:1.5;
+  }
+  .sommaire{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px 16px;
+    margin-bottom:22px;
+    font-size:13px;
+  }
+  .sommaire h2{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--text-muted);
+    margin:0 0 8px;
+  }
+  .sommaire ol{ margin:0; padding-left:18px; }
+  .sommaire li{ margin-bottom:4px; }
+  .sommaire a{ color:var(--blue); text-decoration:none; }
+  section.escale{
+    margin-bottom:34px;
+    padding-top:6px;
+  }
+  section.escale > h2{
+    font-size:16px;
+    color:var(--blue);
+    border-bottom:2px solid var(--blue);
+    padding-bottom:6px;
+    margin:0 0 2px;
+  }
+  .date-escale{
+    font-size:11.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    margin:0 0 12px;
+  }
+  h3.bloc-titre{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--blue);
+    margin:16px 0 6px;
+  }
+  p{ font-size:13px; margin:0 0 8px; }
+  figure.schema{
+    margin:14px 0 6px;
+    text-align:center;
+  }
+  figure.schema img{
+    max-width:100%;
+    height:auto;
+    border:1px solid var(--border);
+    border-radius:8px;
+  }
+  figure.schema figcaption{
+    font-size:11px;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+  .retour-sommaire{
+    display:inline-block;
+    font-size:11px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-top:6px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+  <div class="banniere-test hidden" id="banniere-test">MODE TEST ACTIF — toucher pour ajuster</div>
+
+  <h1>Roadbook</h1>
+  <p class="intro">Informations pratiques et festivités de chaque escale du Tour du Finistère à la Voile 2026. Source exclusive : Roadbook officiel CDV29.</p>
+
+  <div class="sommaire">
+    <h2>Sommaire</h2>
+    <ol>
+      <li><a href="#roscoff">Roscoff</a></li>
+      <li><a href="#aber-wrach">Aber Wrac'h</a></li>
+      <li><a href="#lanildut">Lanildut</a></li>
+      <li><a href="#camaret">Camaret-sur-Mer</a></li>
+      <li><a href="#douarnenez">Douarnenez</a></li>
+      <li><a href="#port-la-foret">Port la Forêt</a></li>
+    </ol>
+  </div>
+
+  <section class="escale" id="roscoff">
+  <h2>Roscoff</h2>
+  <p class="date-escale">Samedi 25 et dimanche 26 juillet</p>
+
+  <h3 class="bloc-titre">Pratique</h3>
+  <p><strong>Prudence.</strong> Pour accéder au port du Bloscon, vous traverserez un chenal prioritaire pour ferries, cargos et navires de commerce.</p>
+  <p>VHF du bureau de commerce : canal 12.</p>
+  <p>Confirmations des inscriptions, Maison de la plaisance, Port du Bloscon : samedi 25 juillet 14h00-18h00, dimanche 26 juillet 09h00-18h00.</p>
+  <p><strong>Transport des voiles de convoyage</strong> — HAKA Voile propose un service de transport de Roscoff à Port la Forêt. Déposer vos voiles à la maison de la plaisance le dimanche 26 juillet entre 14h00 et 18h00.</p>
+
+  <h3 class="bloc-titre">Festivités</h3>
+  <p><strong>Samedi 25 :</strong> 11h00-18h00 Fête de la mer sur le vieux port.</p>
+  <p><strong>Dimanche 26 :</strong> 11h00-18h00 Fête de la mer sur le vieux port et puces de mer au port du Bloscon · 18h30 Cérémonie d'ouverture, briefing coureurs au Centre Nautique de Roscoff · 19h00 Pot d'accueil.</p>
+  <p>Le Centre Nautique de Roscoff est à 15 minutes à pied du port du Bloscon. Navettes gratuites entre le port du Bloscon et le vieux port (toutes les 15 minutes).</p>
+
+  <figure class="schema">
+    <img src="assets/img/roadbook/roscoff.jpg" alt="Schéma du port de Roscoff : Fête de la mer, Village Tourduf, Port du Bloscon" loading="lazy">
+    <figcaption>Schéma de port — Roscoff</figcaption>
+  </figure>
+  <a class="retour-sommaire" href="#roscoff">Retour au sommaire</a>
+  </section>
+
+  <section class="escale" id="aber-wrach">
+  <h2>Aber Wrac'h</h2>
+  <p class="date-escale">Lundi 27 juillet</p>
+
+  <h3 class="bloc-titre">Pratique</h3>
+  <p>Les bateaux d'une longueur inférieure à 10 m seront positionnés à tribord en entrant dans le port ; ceux de plus de 10 m seront à bâbord.</p>
+  <p><strong>Attention :</strong> zone dangereuse à l'entrée du port, soyez vigilant au balisage !</p>
+  <p>Le PC Course sera installé dans le Yacht Club de l'Aber Wrac'h.</p>
+
+  <h3 class="bloc-titre">Festivités</h3>
+  <p>Le Village du Tourduf sera ouvert à partir de 15h00 devant le Yacht Club de l'Aber Wrac'h.</p>
+  <p>La proclamation des résultats du jour se fera vers 18h30 sur le village du Tourduf.</p>
+  <p>Le repas des équipages avec concert se déroulera à partir de 19h30 sur le port de l'Aber Wrac'h.</p>
+
+  <figure class="schema">
+    <img src="assets/img/roadbook/aber-wrach.jpg" alt="Schéma du port de l'Aber Wrac'h : PC Course, Village Tourduf, zones de mouillage par taille de bateau" loading="lazy">
+    <figcaption>Schéma de port — Aber Wrac'h</figcaption>
+  </figure>
+  <a class="retour-sommaire" href="#aber-wrach">Retour au sommaire</a>
+  </section>
+
+  <section class="escale" id="lanildut">
+  <h2>Lanildut</h2>
+  <p class="date-escale">Mardi 28 juillet</p>
+
+  <h3 class="bloc-titre">Pratique</h3>
+  <p>Les bateaux d'une longueur inférieure ou égale à 10,5 m seront positionnés à couple sur les lignes de mouillage à l'entrée du port.</p>
+  <p>Les bateaux de plus de 10,5 m seront positionnés à couple sur le ponton visiteur.</p>
+  <p>Le PC Course sera installé dans le local CCPI sur le port.</p>
+
+  <h3 class="bloc-titre">Festivités</h3>
+  <p>Le village du Tourduf ouvrira à partir de 15h00 dans le champ au-dessus du port de plaisance.</p>
+  <p>La proclamation des résultats du jour se fera vers 18h30 sur le village du Tourduf. Un pot d'accueil sera servi à l'issue de la remise des prix.</p>
+  <p>Un repas des équipages avec concert est organisé à partir de 19h30 près de la scène au-dessus du port.</p>
+
+  <figure class="schema">
+    <img src="assets/img/roadbook/lanildut.jpg" alt="Schéma du port de Lanildut : PC Course, Village Tourduf" loading="lazy">
+    <figcaption>Schéma de port — Lanildut</figcaption>
+  </figure>
+  <a class="retour-sommaire" href="#lanildut">Retour au sommaire</a>
+  </section>
+
+  <section class="escale" id="camaret">
+  <h2>Camaret-sur-Mer</h2>
+  <p class="date-escale">Mercredi 29 juillet</p>
+
+  <h3 class="bloc-titre">Pratique</h3>
+  <p>Tous les bateaux concurrents seront positionnés dans le bassin Vauban (emplacements orange).</p>
+  <p>Des emplacements PMR (en vert) seront réservés au port Notic : attention, tirant d'eau &lt; 2 m !</p>
+  <p>Le PC Course est situé dans la cabane noire à côté de la Tour Vauban.</p>
+
+  <h3 class="bloc-titre">Festivités</h3>
+  <p>Le Village du Tourduf ouvrira à partir de 15h00 sur le sillon près de la Tour Vauban.</p>
+  <p>La proclamation des résultats du jour se fera vers 18h30 devant le podium sur le village du Tourduf. Un pot d'accueil sera servi à l'issue de la remise des prix.</p>
+
+  <figure class="schema">
+    <img src="assets/img/roadbook/camaret.jpg" alt="Schéma du port de Camaret-sur-Mer : bassin Vauban, PC Course, Village Tourduf, emplacements PMR" loading="lazy">
+    <figcaption>Schéma de port — Camaret-sur-Mer</figcaption>
+  </figure>
+  <a class="retour-sommaire" href="#camaret">Retour au sommaire</a>
+  </section>
+
+  <section class="escale" id="douarnenez">
+  <h2>Douarnenez</h2>
+  <p class="date-escale">Jeudi 30 et vendredi 31 juillet</p>
+
+  <h3 class="bloc-titre">Pratique</h3>
+  <p>Les bateaux de moins de 10 m de long sont séparés de ceux de plus de 10 m sur le ponton visiteur.</p>
+  <p>Le PC Course est situé dans la Maison du Nautisme.</p>
+  <p>Sanitaires et douches disponibles à la Maison du Nautisme, et au Centre Nautique (de 17h40 à 19h30 le jeudi).</p>
+
+  <h3 class="bloc-titre">Festivités</h3>
+  <p><strong>Jeudi 30 :</strong> Village du Tourduf ouvert à partir de 15h00 · proclamation des résultats du jour vers 18h30 sur le village · repas des équipages avec concert à partir de 19h30 à la Salle Jules Verne (15 minutes à pied).</p>
+  <p><strong>Vendredi 31 :</strong> Ouverture du village du Tourduf à partir de 09h00 · démonstration d'hélitreuillage à 10h00 devant le village.</p>
+
+  <figure class="schema">
+    <img src="assets/img/roadbook/douarnenez.jpg" alt="Schéma du port de Douarnenez : PC Course, Centre Nautique, Village Tourduf, zones bateaux par taille, Salle Jules Verne" loading="lazy">
+    <figcaption>Schéma de port — Douarnenez</figcaption>
+  </figure>
+  <a class="retour-sommaire" href="#douarnenez">Retour au sommaire</a>
+  </section>
+
+  <section class="escale" id="port-la-foret">
+  <h2>Port la Forêt</h2>
+  <p class="date-escale">Samedi 1er août</p>
+
+  <h3 class="bloc-titre">Pratique</h3>
+  <p>Le PC Course sera situé dans les locaux de Finistère Mer Vent.</p>
+  <p>Restitution des cagnards et pavillons à l'issue de la course de nuit, de 10h00 à 12h00, sous le kiosque de l'Ilot Skoen.</p>
+  <p>Les voiles de convoyage seront à récupérer à la Capitainerie du port de plaisance.</p>
+  <p>Navette retour (Port la Forêt – Morlaix) stationnée sur le parking de l'aire de carénage. Départ prévu à 15h00.</p>
+
+  <h3 class="bloc-titre">Festivités</h3>
+  <p>Petit déjeuner offert aux concurrents à l'issue de l'arrivée de la course de nuit, de 07h00 à 10h00, sous le kiosque de l'Ilot Skoen (près du ponton concurrents).</p>
+  <p>Le Village du Tourduf ouvrira à partir de 09h00 sur le terre-plein central du port de plaisance.</p>
+  <p>La remise des Prix du Tour du Finistère à la Voile 2026 se déroulera à partir de 13h00 sur le village du Tourduf.</p>
+
+  <figure class="schema">
+    <img src="assets/img/roadbook/port-la-foret.jpg" alt="Schéma du port de Port la Forêt : Ilot Skoen, Village Tourduf, navette retour" loading="lazy">
+    <figcaption>Schéma de port — Port la Forêt</figcaption>
+  </figure>
+  <a class="retour-sommaire" href="#port-la-foret">Retour au sommaire</a>
+  </section>
+
+</div>
+
+<script src="js/app-commun.js"></script>
+<script>
+(function () {
+  'use strict';
+  var banniere = document.getElementById('banniere-test');
+  if (AppCommun.estModeTestActif()) {
+    banniere.classList.remove('hidden');
+    banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
+  }
+})();
+</script>
+</body>
+</html>
