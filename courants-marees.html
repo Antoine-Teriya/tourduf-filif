@@ -47,15 +47,42 @@
   </div>
 
   <p class="section-label">Marée du jour</p>
-  <div class="tide-grid">
-    <div class="tide-card">
-      <p class="port-name" id="nom-port-depart">Port de départ</p>
-      <div id="widget-depart"></div>
-    </div>
-    <div class="tide-card">
-      <p class="port-name" id="nom-port-arrivee">Port d'arrivée</p>
-      <div id="widget-arrivee"></div>
-    </div>
+
+  <div class="tide-grid" id="maree-etape-1" style="display:none;">
+    <div class="tide-card"><p class="port-name">Port de départ — Roscoff</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/ROSCOFF?locale=fr"></script></div>
+    <div class="tide-card"><p class="port-name">Port d'arrivée — Aber Wrac'h</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/ABER_WRAC_H?locale=fr"></script></div>
+  </div>
+  <div class="tide-grid" id="maree-etape-2" style="display:none;">
+    <div class="tide-card"><p class="port-name">Port de départ — Aber Wrac'h</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/ABER_WRAC_H?locale=fr"></script></div>
+    <div class="tide-card"><p class="port-name">Port d'arrivée — Lanildut</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/LANILDUT?locale=fr"></script></div>
+  </div>
+  <div class="tide-grid" id="maree-etape-3" style="display:none;">
+    <div class="tide-card"><p class="port-name">Port de départ — Lanildut</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/LANILDUT?locale=fr"></script></div>
+    <div class="tide-card"><p class="port-name">Port d'arrivée — Camaret-sur-Mer</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/CAMARET-SUR-MER?locale=fr"></script></div>
+  </div>
+  <div class="tide-grid" id="maree-etape-4" style="display:none;">
+    <div class="tide-card"><p class="port-name">Port de départ — Camaret-sur-Mer</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/CAMARET-SUR-MER?locale=fr"></script></div>
+    <div class="tide-card"><p class="port-name">Port d'arrivée — Douarnenez</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/DOUARNENEZ?locale=fr"></script></div>
+  </div>
+  <div class="tide-grid" id="maree-etape-5" style="display:none;">
+    <div class="tide-card"><p class="port-name">Douarnenez</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/DOUARNENEZ?locale=fr"></script></div>
+    <div class="tide-card"><p class="port-name">Douarnenez</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/DOUARNENEZ?locale=fr"></script></div>
+  </div>
+  <div class="tide-grid" id="maree-etape-6" style="display:none;">
+    <div class="tide-card"><p class="port-name">Port de départ — Douarnenez</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/DOUARNENEZ?locale=fr"></script></div>
+    <div class="tide-card"><p class="port-name">Port d'arrivée — Port la Forêt</p>
+      <script src="https://services.data.shom.fr/hdm/vignette/petite/PORT_LA_FORET?locale=fr"></script></div>
   </div>
 
   <div class="header-row">
@@ -82,17 +109,6 @@
   </p>
 </div>
 <script>
-// Codes de port SHOM (maree.shom.fr), verifies un par un le 24/07/2026 (recherche directe sur
-// le site, cf. session de travail). Ne pas modifier sans revalider de la meme maniere.
-var CODES_SHOM = {
-  'Roscoff': 'ROSCOFF',
-  "Aber Wrac'h": 'ABER_WRAC_H',
-  'Lanildut': 'LANILDUT',
-  'Camaret-sur-Mer': 'CAMARET-SUR-MER',
-  'Douarnenez': 'DOUARNENEZ',
-  'Port la Forêt': 'PORT_LA_FORET'
-};
-
 // Centre et zoom de carte par etape (calcules a partir de l'emprise reelle des points de courant).
 var VUE_CARTE_PAR_ETAPE = {
   1: { lat: 48.7279, lon: -4.324, zoom: 10 },
@@ -122,8 +138,6 @@ document.getElementById('titre-etape').textContent =
 document.getElementById('sous-titre-etape').textContent =
   'Référence marée/courant : ' + portReference +
   (etape.repli ? ' (' + (etape.repli === 'avant-course' ? 'avant le début de la course' : 'après la fin de la course') + ')' : '');
-document.getElementById('nom-port-depart').textContent = 'Port de départ — ' + etape.portDepart;
-document.getElementById('nom-port-arrivee').textContent = 'Port d\u0027arrivée — ' + etape.portArrivee;
 document.getElementById('label-reference').textContent = 'Courant et carte — référence ' + portReference;
 
 if (donneesEtape.note) {
@@ -131,19 +145,13 @@ if (donneesEtape.note) {
     '<span class="badge-approx">Approximation</span><br>' + donneesEtape.note;
 }
 
-function chargerWidget(conteneurId, nomEscale) {
-  var code = CODES_SHOM[nomEscale];
-  var conteneur = document.getElementById(conteneurId);
-  if (!code) {
-    conteneur.textContent = 'Code SHOM non défini pour ' + nomEscale;
-    return;
+function afficherBlocMaree(numeroEtape) {
+  for (var i = 1; i <= 6; i++) {
+    var bloc = document.getElementById('maree-etape-' + i);
+    if (bloc) { bloc.style.display = (i === numeroEtape) ? 'grid' : 'none'; }
   }
-  var script = document.createElement('script');
-  script.src = 'https://services.data.shom.fr/hdm/vignette/petite/' + code + '?locale=fr';
-  conteneur.appendChild(script);
 }
-chargerWidget('widget-depart', etape.portDepart);
-chargerWidget('widget-arrivee', etape.portArrivee);
+afficherBlocMaree(etape.numero);
 
 // Coefficient du jour pour le port de reference (pour interpolation vive-eau/morte-eau).
 var dateISO = maintenant.toISOString().slice(0, 10);
