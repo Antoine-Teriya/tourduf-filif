@@ -109,22 +109,28 @@
   </p>
 </div>
 <script>
-// Centre et zoom de carte par etape (calcules a partir de l'emprise reelle des points de courant).
-var VUE_CARTE_PAR_ETAPE = {
-  1: { lat: 48.7279, lon: -4.324, zoom: 10 },
-  2: { lat: 48.6163, lon: -4.746, zoom: 11 },
-  3: { lat: 48.4061, lon: -4.8133, zoom: 11 },
-  4: { lat: 48.3116, lon: -4.4493, zoom: 11 },
-  5: { lat: 48.1147, lon: -4.3728, zoom: 12 },
-  6: { lat: 47.9888, lon: -4.1223, zoom: 10 }
-};
-
 // Seuils de force du courant (proposition Claude, a ajuster si besoin - pas une convention SHOM).
 function styleParVitesse(kn) {
   if (kn < 1)  return { couleur: '#A9D18E', epaisseur: 1 };
   if (kn < 2)  return { couleur: '#E8C547', epaisseur: 1.5 };
   if (kn < 3)  return { couleur: '#E08B2E', epaisseur: 2.25 };
   return { couleur: '#A32D2D', epaisseur: 3 };
+}
+
+// Filtrage par zoom (24/07/2026, correction v0.3, decision Antoine du 24/07) : la
+// densite complete des points reste en memoire (jusqu'a 1141 points/etape a 5 MN),
+// seul l'affichage est filtre - d'abord par viewport, puis par grille spatiale
+// adaptative dont la taille (en degres) depend du zoom courant (un point retenu
+// par cellule). Remplace VUE_CARTE_PAR_ETAPE (centres/zooms fixes), obsolete depuis
+// l'elargissement du corridor a 5 MN : la vue initiale est desormais calculee par
+// map.fitBounds() sur l'emprise reelle des points de l'etape.
+function tailleGrilleSelonZoom(zoom) {
+  if (zoom <= 9)   return 0.06;
+  if (zoom === 10) return 0.035;
+  if (zoom === 11) return 0.018;
+  if (zoom === 12) return 0.009;
+  if (zoom === 13) return 0.004;
+  return 0; // zoom >= 14 : densite complete, pas de filtrage
 }
 </script>
 <script>
@@ -161,8 +167,7 @@ var coefficientJour = (pmDuJour && pmDuJour.coefficient) ? pmDuJour.coefficient 
 var facteurVE = Math.max(0, Math.min(1, (coefficientJour - 45) / (95 - 45)));
 </script>
 <script>
-var vue = VUE_CARTE_PAR_ETAPE[etape.numero];
-var map = L.map('map').setView([vue.lat, vue.lon], vue.zoom);
+var map = L.map('map');
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
@@ -179,6 +184,14 @@ var coordArrivee = window.AppCommun.COORDONNEES_ESCALES[etape.portArrivee];
 if (coordDepart) { L.marker([coordDepart.lat, coordDepart.lon]).addTo(map).bindPopup(etape.portDepart + ' (départ)'); }
 if (coordArrivee) { L.marker([coordArrivee.lat, coordArrivee.lon]).addTo(map).bindPopup(etape.portArrivee + ' (arrivée)'); }
 
+// Cadrage dynamique (24/07/2026, correction v0.3) : emprise reelle des points de
+// courant de l'etape + ports de depart/arrivee, plutot qu'un centre/zoom fixe.
+var coordsEmprise = donneesEtape.points.map(function (p) { return [p.lat, p.lon]; });
+if (coordDepart) { coordsEmprise.push([coordDepart.lat, coordDepart.lon]); }
+if (coordArrivee) { coordsEmprise.push([coordArrivee.lat, coordArrivee.lon]); }
+var empriseEtape = L.latLngBounds(coordsEmprise);
+map.fitBounds(empriseEtape, { padding: [20, 20], maxZoom: 13 });
+
 function fleche(bearing, w, couleur) {
   var d = 'M ' + (-w) + ',16 L ' + (-w) + ',-4 L ' + (-w*2) + ',-4 L 0,-20 L ' + (w*2) + ',-4 L ' + w + ',-4 L ' + w + ',16 Z';
   var svg = '<svg width="36" height="36" viewBox="-18,-24 36 44" style="overflow:visible;">' +
@@ -187,10 +200,33 @@ function fleche(bearing, w, couleur) {
 }
 
 var marqueursCourant = [];
+var indexHeureCourant = 6;
+
+// Filtrage a l'affichage (24/07/2026, correction v0.3) : viewport d'abord, puis
+// une grille spatiale adaptative selon le zoom (cf. tailleGrilleSelonZoom). La
+// donnee source (donneesEtape.points) n'est jamais reduite, seul l'affichage l'est.
+function pointsAffiches() {
+  var limites = map.getBounds();
+  var visibles = donneesEtape.points.filter(function (p) { return limites.contains([p.lat, p.lon]); });
+  var taille = tailleGrilleSelonZoom(map.getZoom());
+  if (taille === 0) { return visibles; }
+  var cellulesVues = {};
+  var retenus = [];
+  visibles.forEach(function (p) {
+    var cle = Math.floor(p.lat / taille) + '_' + Math.floor(p.lon / taille);
+    if (!cellulesVues[cle]) {
+      cellulesVues[cle] = true;
+      retenus.push(p);
+    }
+  });
+  return retenus;
+}
+
 function dessinerFleches(indexHeure) {
+  indexHeureCourant = indexHeure;
   marqueursCourant.forEach(function (m) { map.removeLayer(m); });
   marqueursCourant = [];
-  donneesEtape.points.forEach(function (p) {
+  pointsAffiches().forEach(function (p) {
     var ve = p.ve[indexHeure];
     var me = p.me[indexHeure];
     var vitesse = me.speed + facteurVE * (ve.speed - me.speed);
@@ -207,6 +243,9 @@ function dessinerFleches(indexHeure) {
     marqueursCourant.push(marqueur);
   });
 }
+
+// Redessine au deplacement/zoom (viewport et taille de grille changent).
+map.on('moveend', function () { dessinerFleches(indexHeureCourant); });
 </script>
 <script>
 var btnActuel = document.getElementById('btn-actuel');
