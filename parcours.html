@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parcours de l'étape — Filifer</title>
+<style>
+  :root{
+    --blue:#0B4C7C; --gold:#C9971F; --bg:#FAFAFA; --surface2:#FFFFFF;
+    --border:#E2E2E0; --text-primary:#2B2A28; --text-secondary:#6B6862;
+    --text-muted:#8A867F; --accent-bg:#E4EEF6; --warn-bg:#FBF0DC; --warn-text:#8A5A00;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); font-family:Arial, Helvetica, sans-serif; color:var(--text-primary); }
+  .page{ max-width:480px; margin:0 auto; padding:18px 18px 32px; }
+  .retour{ display:inline-block; font-size:12px; color:var(--blue); text-decoration:none; margin-bottom:10px; }
+  .banniere-simulation{ background:var(--warn-bg); color:var(--warn-text); font-size:11px; font-weight:700;
+    letter-spacing:0.04em; padding:6px 10px; border-radius:6px; margin-bottom:12px; text-align:center; }
+  .banniere-simulation.hidden{ display:none; }
+  h1{ font-size:21px; margin:0 0 4px; }
+  .stage-line{ font-size:13px; color:var(--text-secondary); margin:0 0 4px; }
+  .ref-line{ font-size:12px; color:var(--text-muted); margin:0 0 16px; }
+  .section-label{ font-size:11px; color:var(--text-muted); text-transform:uppercase;
+    letter-spacing:0.05em; margin:20px 0 8px; }
+  .card{ background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+    padding:14px 16px; margin-bottom:12px; }
+  .card-title{ font-weight:600; font-size:14px; margin:0 0 12px; }
+  label{ font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px; }
+  input, select{ width:100%; padding:7px 9px; border:1px solid var(--border); border-radius:6px;
+    font-size:13px; font-family:inherit; background:#fff; color:var(--text-primary); }
+  .field-block{ margin-bottom:12px; }
+  .field-row{ display:flex; gap:10px; margin-bottom:4px; }
+  .field-row > div{ flex:1; }
+  .btn{ font-size:13px; font-weight:600; padding:8px 14px; border-radius:7px;
+    border:1px solid var(--border); background:#fff; color:var(--text-primary); cursor:pointer; }
+  .btn-primary{ background:var(--blue); color:#fff; border-color:var(--blue); }
+  .btn-ghost{ background:transparent; color:var(--text-muted); }
+  .btn-row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .status-line{ font-size:12px; color:var(--text-muted); margin:8px 0 0; }
+  .status-ok{ color:var(--blue); font-weight:600; }
+  .toggle-row{ display:flex; align-items:center; justify-content:space-between; }
+  .toggle-label{ font-size:13px; font-weight:600; }
+  .switch{ position:relative; width:40px; height:22px; flex:0 0 40px; }
+  .switch input{ display:none; }
+  .switch .track{ position:absolute; inset:0; background:var(--border); border-radius:12px; transition:background .15s; }
+  .switch input:checked + .track{ background:var(--blue); }
+  .switch .thumb{ position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+    background:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.25); transition:left .15s; }
+  .switch input:checked ~ .thumb{ left:20px; }
+  .conditional-fields{ border-left:2px solid var(--accent-bg); padding-left:12px; margin-top:12px; }
+  .seg-list{ border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:14px;
+    background:var(--surface2); }
+  .seg-item{ padding:9px 14px; font-size:13px; color:var(--text-secondary);
+    border-bottom:1px solid var(--border); cursor:pointer; }
+  .seg-item:last-child{ border-bottom:none; }
+  .seg-item.active{ font-weight:600; background:var(--accent-bg); color:var(--blue); }
+  .metrics3{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .metric-label{ font-size:11px; color:var(--text-muted); margin:0 0 2px; }
+  .metric-value{ font-size:15px; font-weight:600; margin:0; }
+  .metric-full{ grid-column:1/-1; margin-top:8px; }
+  .metric-note{ font-size:11px; color:var(--text-muted); margin:3px 0 0; font-weight:400; }
+  .alert{ display:flex; align-items:flex-start; gap:8px; background:var(--warn-bg);
+    border-radius:8px; padding:8px 12px; margin-top:12px; }
+  .alert span{ font-size:13px; color:var(--warn-text); }
+  .alert svg{ flex:0 0 16px; margin-top:2px; }
+  .sail-block{ background:#F3F3F1; border-radius:8px; padding:10px 14px; margin-bottom:10px; }
+  .sail-block .label{ font-size:12px; color:var(--text-muted); margin:0 0 8px; }
+  .sail-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .badge{ background:var(--accent-bg); color:var(--blue); font-size:13px; font-weight:600;
+    padding:4px 12px; border-radius:6px; }
+  .badge-alt{ background:#EDEDEB; color:var(--text-secondary); font-weight:400; font-size:12px; }
+  .cap-note{ font-size:13px; color:var(--text-secondary); margin-left:auto; }
+  .cap-optimal{ margin-top:10px; font-size:14px; }
+  .result-block{ background:var(--accent-bg); border-radius:10px; padding:14px 16px; }
+  .result-block .label{ font-size:12px; color:var(--blue); margin:0 0 6px; }
+  .result-row{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+  .result-row .cap-value{ font-size:22px; font-weight:600; color:var(--blue); }
+  .result-row .vmg{ font-size:14px; color:var(--blue); text-align:right; }
+  .result-note{ font-size:12px; color:var(--blue); margin:8px 0 0; }
+  .bornes-line{ font-size:11px; color:var(--text-muted); margin:10px 0 0; }
+  .hidden{ display:none; }
+  table.perso{ width:100%; border-collapse:collapse; font-size:12px; }
+  table.perso th{ font-size:11px; color:var(--text-muted); font-weight:400; text-align:left; padding:0 4px 4px; }
+  table.perso td{ padding:2px 4px 6px; }
+  table.perso input{ padding:5px 6px; font-size:12px; }
+  .mention{ font-size:11px; color:var(--text-muted); margin:14px 0 0; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+  <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
+
+  <h1>Parcours de l'étape</h1>
+  <p class="stage-line" id="stage-line"></p>
+  <p class="ref-line" id="ref-line"></p>
+
+  <p class="section-label">Parcours du jour</p>
+  <div class="card">
+    <div class="field-block">
+      <label for="select-parcours">Parcours</label>
+      <select id="select-parcours"></select>
+    </div>
+    <div id="bloc-perso" class="hidden">
+      <label>Marques du parcours personnalisé</label>
+      <table class="perso">
+        <thead><tr><th>N°</th><th>Nom</th><th>Latitude</th><th>Longitude</th><th>Côté</th></tr></thead>
+        <tbody id="corps-perso"></tbody>
+      </table>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn" id="btn-ajouter-marque">Ajouter une marque</button>
+        <button class="btn btn-ghost" id="btn-vider-perso">Vider</button>
+      </div>
+      <p class="status-line">Coordonnées en degrés décimaux, négatives vers l'ouest et le sud.</p>
+    </div>
+  </div>
+
+  <p class="section-label">Ligne de départ</p>
+  <div class="card">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-capturer">Capturer ma position</button>
+      <button class="btn btn-ghost" id="btn-reinit-ligne">Réinitialiser</button>
+    </div>
+    <p class="status-line" id="statut-ligne">Statut : non capturée.</p>
+  </div>
+
+  <p class="section-label">Bouée de dégagement</p>
+  <div class="card">
+    <div class="toggle-row">
+      <span class="toggle-label">Bouée de dégagement activée</span>
+      <label class="switch">
+        <input type="checkbox" id="toggle-bouee">
+        <span class="track"></span>
+        <span class="thumb"></span>
+      </label>
+    </div>
+    <div class="conditional-fields hidden" id="champs-bouee">
+      <div class="field-row">
+        <div>
+          <label for="bouee-distance">Distance depuis la ligne (MN)</label>
+          <input type="number" id="bouee-distance" step="0.1" min="0" value="0.5">
+        </div>
+        <div>
+          <label for="bouee-cap">Cap depuis la ligne (degrés)</label>
+          <input type="number" id="bouee-cap" step="1" min="0" max="359" value="0">
+        </div>
+      </div>
+      <p class="status-line" id="statut-bouee">Coordonnées dérivées automatiquement.</p>
+    </div>
+    <p class="status-line" id="mention-bouee-inactive">Désactivée : premier segment par défaut, ligne de départ vers la marque n°1 (IC art. 9.3).</p>
+  </div>
+
+  <p class="section-label">Vent réel observé</p>
+  <div class="card">
+    <div class="field-row">
+      <div>
+        <label for="vent-direction">Direction (degrés vrais)</label>
+        <input type="number" id="vent-direction" step="1" min="0" max="359" value="240">
+      </div>
+      <div>
+        <label for="vent-force">Force (nœuds)</label>
+        <input type="number" id="vent-force" step="1" min="0" max="45" value="14">
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Segments</p>
+  <div class="seg-list" id="liste-segments"></div>
+  <div class="btn-row" style="margin-bottom:14px;">
+    <button class="btn btn-ghost" id="btn-gpx">Exporter le parcours en GPX</button>
+  </div>
+
+  <div id="zone-resultats"></div>
+
+  <p class="mention" id="mention-methode"></p>
+
+</div>
+
+<script src="js/app-commun.js"></script>
+<script src="js/voiles-data.js"></script>
+<script src="js/parcours-data.js"></script>
+<script src="js/courants-data.js"></script>
+<script src="js/parcours-moteur.js"></script>
+<script>
+// Etat de la page. Les saisies manuelles sont persistees (Section 11.2).
+var CLE = 'tourduf_parcours_v1';
+var etat = {
+  parcours: '0', segment: 0, ligne: null, bouee: false,
+  boueeDistance: 0.5, boueeCap: 0, ventDirection: 240, ventForce: 14, perso: []
+};
+var maintenant = window.AppCommun.getEffectiveNow();
+var etape = window.AppCommun.getEtapeDuJour(maintenant);
+var portReference = window.AppCommun.PORT_REFERENCE_PAR_ETAPE[etape.numero];
+var variantes = window.ParcoursData.variantes(etape.numero);
+var donneesCourant = window.COURANTS_DATA[String(etape.numero)];
+
+function lireEtat() {
+  try {
+    var brut = localStorage.getItem(CLE);
+    if (brut) {
+      var o = JSON.parse(brut);
+      Object.keys(etat).forEach(function (k) { if (o[k] !== undefined) { etat[k] = o[k]; } });
+    }
+  } catch (e) { /* stockage indisponible : saisies non persistees */ }
+}
+function ecrireEtat() {
+  try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) { /* idem */ }
+}
+
+// Coefficient et creneau de maree, memes conventions que la fonctionnalite 5.
+function contexteMaree() {
+  var dateISO = maintenant.toISOString().slice(0, 10);
+  var ref = window.AppCommun.getMareeReference(portReference, dateISO);
+  var pm = ref.evenements.filter(function (e) { return e.type === 'PM'; })[0];
+  var coef = (pm && pm.coefficient) ? pm.coefficient : 70;
+  var facteurVE = Math.max(0, Math.min(1, (coef - 45) / (95 - 45)));
+  var proche = window.AppCommun.getPleineMerProche(portReference, maintenant);
+  var index = 6;
+  if (proche && proche.heure) {
+    var hm = proche.heure.split(':');
+    var minutesPM = parseInt(hm[0], 10) * 60 + parseInt(hm[1], 10);
+    var minutesNow = maintenant.getHours() * 60 + maintenant.getMinutes();
+    index = 6 + Math.round((minutesNow - minutesPM) / 60);
+    index = Math.max(0, Math.min(12, index));
+  }
+  return { coefficient: coef, facteurVE: facteurVE, index: index };
+}
+var maree = contexteMaree();
+
+function libelleCreneau(i) {
+  var o = i - 6;
+  return o === 0 ? 'pleine mer' : (o > 0 ? 'PM +' + o + ' h' : 'PM ' + o + ' h');
+}
+function formatCap(c) { return ('00' + Math.round(c)).slice(-3) + '°'; }
+</script>
+<script>
+// Construction de la liste des points du parcours retenu.
+function pointsParcours() {
+  if (etat.parcours === 'perso') {
+    return etat.perso.filter(function (p) {
+      return isFinite(parseFloat(p.lat)) && isFinite(parseFloat(p.lon));
+    }).map(function (p, i) {
+      return { ordre: i + 1, nom: p.nom || ('Marque ' + (i + 1)), cote: p.cote || null,
+               consigne: p.cote ? ('Laisser ' + p.cote) : '', lat: parseFloat(p.lat), lon: parseFloat(p.lon) };
+    });
+  }
+  var v = variantes[parseInt(etat.parcours, 10)];
+  return v ? v.points.slice() : [];
+}
+
+// Segments : la ligne de depart capturee remplace le point de depart publie.
+// Bouee de degagement inseree en tete si activee (Section 10.3).
+function construireSegments() {
+  var pts = pointsParcours().slice();
+  if (!pts.length) { return []; }
+  if (etat.ligne) {
+    var depart = { ordre: 'D', nom: 'Ligne de départ', consigne: 'Position capturée',
+                   lat: etat.ligne.lat, lon: etat.ligne.lon };
+    if (etat.parcours === 'perso') { pts.unshift(depart); } else { pts[0] = depart; }
+  }
+  if (etat.bouee && etat.ligne) {
+    var b = window.ParcoursMoteur.destination(etat.ligne, Number(etat.boueeCap), Number(etat.boueeDistance));
+    pts.splice(1, 0, { ordre: 'B', nom: 'Bouée de dégagement', consigne: 'Marque de dégagement',
+                       lat: b.lat, lon: b.lon });
+  }
+  var segs = [];
+  for (var i = 0; i < pts.length - 1; i++) {
+    segs.push({ numero: i + 1, debut: pts[i], fin: pts[i + 1] });
+  }
+  return segs;
+}
+
+function afficherSegments() {
+  var segs = construireSegments();
+  var hote = document.getElementById('liste-segments');
+  hote.innerHTML = '';
+  if (!segs.length) {
+    hote.innerHTML = '<div class="seg-item">Aucun segment : sélectionner un parcours, ou saisir au moins deux marques.</div>';
+    return;
+  }
+  if (etat.segment >= segs.length) { etat.segment = 0; }
+  segs.forEach(function (s, i) {
+    var d = document.createElement('div');
+    d.className = 'seg-item' + (i === etat.segment ? ' active' : '');
+    d.textContent = s.numero + ' — ' + s.debut.nom + ' → ' + s.fin.nom;
+    d.addEventListener('click', function () { etat.segment = i; ecrireEtat(); rafraichir(); });
+    hote.appendChild(d);
+  });
+}
+
+// Export GPX a sens unique vers QtVlm (Section 10.2).
+function exporterGPX() {
+  var pts = pointsParcours();
+  if (!pts.length) { return; }
+  var nom = etat.parcours === 'perso' ? 'Parcours personnalisé'
+          : (variantes[parseInt(etat.parcours, 10)] || {}).nom;
+  var x = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<gpx version="1.1" creator="Filifer - Tour du Finistere 2026" xmlns="http://www.topografix.com/GPX/1/1">\n' +
+    '<rte><name>Étape ' + etape.numero + ' — ' + nom + '</name>\n';
+  pts.forEach(function (p) {
+    x += '<rtept lat="' + p.lat + '" lon="' + p.lon + '"><name>' +
+         String(p.nom).replace(/[<>&]/g, '') + '</name></rtept>\n';
+  });
+  x += '</rte></gpx>\n';
+  var url = URL.createObjectURL(new Blob([x], { type: 'application/gpx+xml' }));
+  var a = document.createElement('a');
+  a.href = url; a.download = 'filifer-etape' + etape.numero + '.gpx';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+<script>
+var PICTO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6862" ' +
+  'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/>' +
+  '<path d="M6 20V4l9 8-9 5"/><path d="M13 20l4-9"/></svg>';
+var PICTO_ALERTE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A5A00" ' +
+  'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 ' +
+  '1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/>' +
+  '<line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
+function libelleAmure(a) { return a === 'babord' ? 'bâbord' : 'tribord'; }
+
+function libelleRegime(r) {
+  if (r === 'pres') { return 'près'; }
+  if (r === 'largue') { return 'grand largue'; }
+  return 'route directe';
+}
+
+function rendreResultat(seg, r) {
+  var c = r.courant, h = [];
+  h.push('<div class="card"><p class="card-title">Segment ' + seg.numero + ' — ' +
+    seg.debut.nom + ' → ' + seg.fin.nom + '</p><div class="metrics3">' +
+    '<div><p class="metric-label">Cap direct</p><p class="metric-value">' + formatCap(r.capDirect) + '</p></div>' +
+    '<div><p class="metric-label">Distance</p><p class="metric-value">' + r.distance.toFixed(1) + ' MN</p></div>' +
+    '<div><p class="metric-label">TWA direct</p><p class="metric-value">' + Math.round(Math.abs(r.twaDirect)) + '°</p></div>');
+  if (c && c.disponible) {
+    h.push('<div class="metric-full"><p class="metric-label">Courant moyen sur le segment (' +
+      libelleCreneau(maree.index) + ', coefficient ' + maree.coefficient + ')</p>' +
+      '<p class="metric-value">' + c.vitesse.toFixed(1) + ' nd, ' + formatCap(c.cap) + '</p>' +
+      '<p class="metric-note">Le long du segment : de ' + c.minimum.vitesse.toFixed(1) + ' nd à ' +
+      c.maximum.vitesse.toFixed(1) + ' nd, maximum atteint à ' + c.maximum.distance.toFixed(1) +
+      ' MN du début. ' + c.echantillons + ' échantillons, ' + c.pointsSHOM + ' points SHOM.</p></div>');
+  } else {
+    h.push('<div class="metric-full"><p class="metric-label">Courant</p>' +
+      '<p class="metric-value">non disponible</p>' +
+      '<p class="metric-note">Aucune donnée de courant sur cette zone : les caps affichés tiennent compte du vent seul.</p></div>');
+  }
+  h.push('</div>');
+  if (r.regime !== 'direct') {
+    h.push('<div class="alert">' + PICTO_ALERTE + '<span>TWA direct ' +
+      Math.round(Math.abs(r.twaDirect)) + '° — route directe impossible, bords de ' +
+      libelleRegime(r.regime) + ' nécessaires.</span></div>');
+  }
+  h.push('</div>');
+
+  var conf = r.configuration, vs = r.ventSeul;
+  h.push('<div class="sail-block"><p class="label">Vent seul — configuration recommandée</p>' +
+    '<div class="sail-row">' + PICTO +
+    '<span class="badge">' + conf.gv + '</span><span class="badge">' + conf.voile + '</span>' +
+    (conf.alt ? '<span class="badge badge-alt">ou ' + conf.alt.voile + '</span>' : '') +
+    '<span class="cap-note">' + libelleRegime(r.regime) + ', ' + libelleAmure(vs.amure) + ' amure</span></div>' +
+    '<div class="cap-optimal">Cap optimal : <strong>' + formatCap(vs.cap) + '</strong>' +
+    ' — TWA ' + Math.round(vs.twa) + '°, vitesse cible ' + vs.vitesse.toFixed(1) + ' nd' +
+    ', VMG ' + vs.vmg.toFixed(1) + ' nd sur ' + r.referenceVMG + '.</div></div>');
+
+  var vc = r.ventCourant;
+  if (vc) {
+    h.push('<div class="result-block"><p class="label">Vent + courant — cap à tenir</p>' +
+      '<div class="result-row"><span class="cap-value">' + formatCap(vc.cap) + '</span>' +
+      '<span class="vmg">VMG cible ' + vc.vmg.toFixed(1) + ' nd<br>sur ' + r.referenceVMG + '</span></div>' +
+      '<p class="result-note">Vitesse surface ' + vc.vitesse.toFixed(1) + ' nd, vitesse fond ' +
+      vc.vitesseFond.toFixed(1) + ' nd, route fond ' + formatCap(vc.capFond) + '.' +
+      (r.regime !== 'direct' ? ' Bord de ' + libelleRegime(r.regime) + ', ' + libelleAmure(vc.amure) +
+        ' amure à préférer : progression vers la marque ' + vc.progression.toFixed(1) +
+        ' nd contre ' + vc.autreAmure.progression.toFixed(1) + ' nd sur l\'autre amure. Virement nécessaire pour rallier la marque.' : '') +
+      '</p></div>');
+  }
+  h.push('<p class="bornes-line">Bornes de régime recalculées pour ' + etat.ventForce +
+    ' nœuds depuis la table des voiles : près ' + r.bornes.pres.twa.toFixed(0) +
+    '°, grand largue ' + r.bornes.largue.twa.toFixed(0) + '°.</p>');
+  return h.join('');
+}
+</script>
+<script>
+function rafraichir() {
+  afficherSegments();
+  var segs = construireSegments();
+  var zone = document.getElementById('zone-resultats');
+  if (!segs.length) { zone.innerHTML = ''; return; }
+  var seg = segs[etat.segment];
+  var courant = donneesCourant
+    ? window.ParcoursMoteur.courantSegment(donneesCourant.points, seg.debut, seg.fin, maree.index, maree.facteurVE)
+    : { disponible: false };
+  var r = window.ParcoursMoteur.analyser(seg.debut, seg.fin,
+    Number(etat.ventDirection), Number(etat.ventForce), courant);
+  zone.innerHTML = rendreResultat(seg, r);
+}
+
+function lignePersoHTML(i, p) {
+  return '<tr><td>' + (i + 1) + '</td>' +
+    '<td><input data-perso="nom" data-i="' + i + '" value="' + (p.nom || '') + '"></td>' +
+    '<td><input data-perso="lat" data-i="' + i + '" value="' + (p.lat || '') + '"></td>' +
+    '<td><input data-perso="lon" data-i="' + i + '" value="' + (p.lon || '') + '"></td>' +
+    '<td><select data-perso="cote" data-i="' + i + '">' +
+    ['', 'bâbord', 'tribord'].map(function (c) {
+      return '<option' + (p.cote === c ? ' selected' : '') + '>' + c + '</option>';
+    }).join('') + '</select></td></tr>';
+}
+function afficherPerso() {
+  var corps = document.getElementById('corps-perso');
+  corps.innerHTML = etat.perso.map(function (p, i) { return lignePersoHTML(i, p); }).join('');
+  Array.prototype.forEach.call(corps.querySelectorAll('[data-perso]'), function (el) {
+    el.addEventListener('change', function () {
+      etat.perso[Number(el.getAttribute('data-i'))][el.getAttribute('data-perso')] = el.value;
+      ecrireEtat(); rafraichir();
+    });
+  });
+}
+
+function majAffichageLigne() {
+  var e = document.getElementById('statut-ligne');
+  e.innerHTML = etat.ligne
+    ? 'Statut : <span class="status-ok">capturée — ' + etat.ligne.lat.toFixed(5) + ', ' +
+      etat.ligne.lon.toFixed(5) + '</span> (' + etat.ligne.heure + ')'
+    : 'Statut : non capturée. Sans capture, le parcours démarre au point de départ publié dans l\'IC.';
+}
+function majAffichageBouee() {
+  document.getElementById('champs-bouee').className = etat.bouee ? 'conditional-fields' : 'conditional-fields hidden';
+  document.getElementById('mention-bouee-inactive').className = etat.bouee ? 'status-line hidden' : 'status-line';
+  if (etat.bouee && !etat.ligne) {
+    document.getElementById('statut-bouee').textContent =
+      'Capture de la ligne de départ nécessaire pour dériver les coordonnées de la bouée.';
+  } else if (etat.bouee) {
+    var b = window.ParcoursMoteur.destination(etat.ligne, Number(etat.boueeCap), Number(etat.boueeDistance));
+    document.getElementById('statut-bouee').textContent =
+      'Coordonnées dérivées : ' + b.lat.toFixed(5) + ', ' + b.lon.toFixed(5) + '.';
+  }
+}
+
+function initSelect() {
+  var s = document.getElementById('select-parcours');
+  variantes.forEach(function (v, i) {
+    var o = document.createElement('option');
+    o.value = String(i);
+    o.textContent = v.nom + (v.distanceIC ? ' (' + v.distanceIC + ' MN annoncés)' : '');
+    s.appendChild(o);
+  });
+  var o = document.createElement('option');
+  o.value = 'perso'; o.textContent = 'Parcours personnalisé…';
+  s.appendChild(o);
+  if (!variantes.length) { etat.parcours = 'perso'; }
+  s.value = etat.parcours;
+  document.getElementById('bloc-perso').className = etat.parcours === 'perso' ? '' : 'hidden';
+  s.addEventListener('change', function () {
+    etat.parcours = s.value; etat.segment = 0;
+    document.getElementById('bloc-perso').className = etat.parcours === 'perso' ? '' : 'hidden';
+    ecrireEtat(); rafraichir();
+  });
+}
+</script>
+<script>
+(function initialiser() {
+  lireEtat();
+
+  document.getElementById('stage-line').textContent =
+    'Étape ' + etape.numero + ' — ' + etape.portDepart + ' \u2192 ' + etape.portArrivee +
+    (etape.repli ? (etape.repli === 'avant-course' ? ' (avant le début de la course)' : ' (après la fin de la course)') : '');
+  document.getElementById('ref-line').textContent =
+    'Référence courant et marée : ' + portReference + ' — créneau ' + libelleCreneau(maree.index) +
+    ', coefficient ' + maree.coefficient + '.';
+
+  var banniere = document.getElementById('banniere-simulation');
+  if (window.AppCommun.estModeSimulationActif()) { banniere.className = 'banniere-simulation'; }
+  banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
+
+  initSelect();
+  afficherPerso();
+  majAffichageLigne();
+  document.getElementById('toggle-bouee').checked = etat.bouee;
+  document.getElementById('bouee-distance').value = etat.boueeDistance;
+  document.getElementById('bouee-cap').value = etat.boueeCap;
+  document.getElementById('vent-direction').value = etat.ventDirection;
+  document.getElementById('vent-force').value = etat.ventForce;
+  majAffichageBouee();
+
+  document.getElementById('btn-capturer').addEventListener('click', function () {
+    var btn = this; btn.textContent = 'Capture…';
+    window.AppCommun.getEffectivePosition().then(function (p) {
+      btn.textContent = 'Capturer ma position';
+      if (!p) { document.getElementById('statut-ligne').textContent = 'Statut : position indisponible.'; return; }
+      var d = window.AppCommun.getEffectiveNow();
+      etat.ligne = { lat: p.lat, lon: p.lon,
+        heure: ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) };
+      ecrireEtat(); majAffichageLigne(); majAffichageBouee(); rafraichir();
+    }).catch(function () {
+      btn.textContent = 'Capturer ma position';
+      document.getElementById('statut-ligne').textContent = 'Statut : position indisponible.';
+    });
+  });
+  document.getElementById('btn-reinit-ligne').addEventListener('click', function () {
+    etat.ligne = null; ecrireEtat(); majAffichageLigne(); majAffichageBouee(); rafraichir();
+  });
+  document.getElementById('toggle-bouee').addEventListener('change', function () {
+    etat.bouee = this.checked; ecrireEtat(); majAffichageBouee(); rafraichir();
+  });
+  ['bouee-distance', 'bouee-cap', 'vent-direction', 'vent-force'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', function () {
+      etat.boueeDistance = document.getElementById('bouee-distance').value;
+      etat.boueeCap = document.getElementById('bouee-cap').value;
+      etat.ventDirection = document.getElementById('vent-direction').value;
+      etat.ventForce = document.getElementById('vent-force').value;
+      ecrireEtat(); majAffichageBouee(); rafraichir();
+    });
+  });
+  document.getElementById('btn-ajouter-marque').addEventListener('click', function () {
+    etat.perso.push({ nom: '', lat: '', lon: '', cote: '' });
+    ecrireEtat(); afficherPerso(); rafraichir();
+  });
+  document.getElementById('btn-vider-perso').addEventListener('click', function () {
+    etat.perso = []; ecrireEtat(); afficherPerso(); rafraichir();
+  });
+  document.getElementById('btn-gpx').addEventListener('click', exporterGPX);
+
+  document.getElementById('mention-methode').innerHTML =
+    'Aide à la décision sur le bord à venir, pas un routage. Vitesses issues de la table des voiles ' +
+    'de Filifer, reconstituée et non mesurée. Courant issu du produit SHOM « Courants de marée 2D », ' +
+    'interpolé entre vive-eau et morte-eau selon le coefficient du jour, moyenné le long du segment. ' +
+    'Bornes de régime recalculées par force de vent depuis la table des voiles.' +
+    (window.ParcoursData.PARCOURS[String(etape.numero)] &&
+     window.ParcoursData.PARCOURS[String(etape.numero)].parcoursConstruit
+      ? ' Étape à parcours construit : les bouées étant posées le jour même, aucun parcours n\'est publié dans l\'IC, seule la saisie personnalisée est possible.' : '');
+
+  rafraichir();
+})();
+</script>
+</body>
+</html>
