@@ -11,6 +11,21 @@
 
   var ESCALES = ['Roscoff', "Aber Wrac'h", 'Lanildut', 'Camaret-sur-Mer', 'Douarnenez', 'Port la Forêt'];
 
+  // Coordonnées des 6 escales - source : IC_Tour_du_Finistère_2026.pdf, Annexe Parcours,
+  // waypoints "Arrivée" de la dernière course menant à l'escale (identiques entre variantes de
+  // parcours d'une même course) ; pour Roscoff, jamais une arrivée, waypoint "Départ" de la
+  // Course 1. Degrés décimaux convertis par Claude à partir des degrés/minutes de la source
+  // (conversion arithmétique directe, sans arrondi). Règle de sélection validée par Antoine
+  // le 24/07/2026, avant codage de la fonctionnalité 4 (météo).
+  var COORDONNEES_ESCALES = {
+    'Roscoff': { lat: 48.726633, lon: -3.944767 },
+    "Aber Wrac'h": { lat: 48.600167, lon: -4.564417 },
+    'Lanildut': { lat: 48.469333, lon: -4.777417 },
+    'Camaret-sur-Mer': { lat: 48.282167, lon: -4.586667 },
+    'Douarnenez': { lat: 48.106000, lon: -4.342917 },
+    'Port la Forêt': { lat: 47.875333, lon: -3.966917 }
+  };
+
   var DATE_DEBUT_COURSE = '2026-07-27';
   var DATE_FIN_COURSE = '2026-08-01';
 
@@ -78,10 +93,9 @@
         return Promise.resolve(null);
       }
       if (pos.type === 'escale') {
-        // TODO (avant v0.2 / fonctionnalité 4) : coordonnées lat/lon des 6 escales non
-        // disponibles dans les sources à ce jour. Source à confirmer (Annexe Parcours de l'IC,
-        // ou coordonnées portuaires publiques) avant de compléter cette résolution.
-        return Promise.resolve({ lat: null, lon: null, label: pos.valeur, type: 'escale' });
+        var coord = COORDONNEES_ESCALES[pos.valeur];
+        if (!coord) { return Promise.resolve({ lat: null, lon: null, label: pos.valeur, type: 'escale' }); }
+        return Promise.resolve({ lat: coord.lat, lon: coord.lon, label: pos.valeur, type: 'escale' });
       }
       if (pos.type === 'personnalise' && pos.valeur) {
         return Promise.resolve({ lat: pos.valeur.lat, lon: pos.valeur.lon, label: 'Personnalisé', type: 'personnalise' });
@@ -135,6 +149,7 @@
 
   global.AppCommun = {
     ESCALES: ESCALES,
+    COORDONNEES_ESCALES: COORDONNEES_ESCALES,
     lireModeSimulation: lireModeSimulation,
     activerModeSimulation: activerModeSimulation,
     desactiverModeSimulation: desactiverModeSimulation,
