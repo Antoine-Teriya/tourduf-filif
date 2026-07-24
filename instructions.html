@@ -115,6 +115,13 @@
     margin:0 0 8px;
   }
   p{ font-size:13px; margin:0 0 8px; }
+  /* Homogeneite typographique (24/07/2026, retour Antoine) : les listes a puces du
+     corps reglementaire (section.ic-section) n'heritaient d'aucune taille de police
+     explicite et retombaient sur la taille par defaut du navigateur, plus grande que
+     le texte courant (p{font-size:13px}). Alignement sur la meme taille. Ne touche
+     pas .sommaire (deja stylee separement). */
+  section.ic-section ul{ margin:0 0 10px; padding-left:20px; }
+  section.ic-section li{ font-size:13px; margin-bottom:4px; }
   .placeholder-image{
     background:#F1F5F8;
     border:1px dashed var(--border);
