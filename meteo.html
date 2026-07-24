@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Météo — Filifer</title>
+<style>
+  :root{
+    --blue:#0B4C7C;
+    --gold:#C9971F;
+    --bg:#FAFAFA;
+    --surface2:#FFFFFF;
+    --border:#E2E2E0;
+    --text-primary:#2B2A28;
+    --text-secondary:#6B6862;
+    --text-muted:#8A867F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text-primary);
+  }
+  .page{
+    max-width:480px;
+    margin:0 auto;
+    padding:18px 18px 32px;
+  }
+  .retour{
+    display:inline-block;
+    font-size:12px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-bottom:10px;
+  }
+  .banniere-simulation{
+    background:#FBF0DC;
+    color:#8A5A00;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+    padding:6px 10px;
+    border-radius:6px;
+    margin-bottom:12px;
+    cursor:pointer;
+  }
+  .banniere-simulation.hidden{ display:none; }
+  h1{
+    font-size:19px;
+    color:var(--blue);
+    margin:6px 0 4px;
+  }
+  .date-line{
+    font-size:12px;
+    color:var(--text-muted);
+    margin:0 0 2px;
+  }
+  .stage-line{
+    font-size:14px;
+    font-weight:600;
+    margin:0 0 14px;
+    color:var(--text-primary);
+  }
+  .refresh-line{
+    font-size:11px;
+    color:var(--text-muted);
+    display:flex;
+    align-items:center;
+    gap:4px;
+    margin:0 0 14px;
+  }
+  .refresh-line .icon{ flex-shrink:0; }
+  .mention-repli{
+    background:#FBF0DC;
+    color:#8A5A00;
+    font-size:11px;
+    padding:7px 10px;
+    border-radius:6px;
+    margin:0 0 14px;
+    line-height:1.4;
+  }
+  .mention-repli.hidden{ display:none; }
+  .section-label{
+    font-size:12px;
+    color:var(--text-muted);
+    margin:20px 0 10px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+  }
+  .cartes{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .card{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+  }
+  .card-title{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:12px;
+  }
+  .card-title span{
+    font-weight:600;
+    font-size:14px;
+  }
+  .metrics{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px 14px;
+  }
+  .metric-full{ grid-column:1 / -1; }
+  .metric-label{
+    font-size:11px;
+    color:var(--text-muted);
+    margin:0 0 3px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .metric-value{
+    font-size:16px;
+    font-weight:600;
+    margin:0;
+  }
+  .metric-unit{
+    font-size:11px;
+    font-weight:400;
+    color:var(--text-secondary);
+  }
+  .indispo{
+    font-size:12px;
+    color:var(--text-muted);
+    font-style:italic;
+    margin:0;
+  }
+  .forecast-row{
+    display:flex;
+    justify-content:space-between;
+    gap:2px;
+  }
+  .forecast-slot{
+    text-align:center;
+    flex:1;
+  }
+  .forecast-slot .hour{
+    font-size:10px;
+    color:var(--text-muted);
+    margin:0 0 5px;
+  }
+  .forecast-slot .speed{
+    font-size:13px;
+    font-weight:600;
+    margin:5px 0 0;
+  }
+  .icon{ color:var(--blue); flex-shrink:0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+  <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
+
+  <h1>Météo</h1>
+  <p class="date-line" id="date-line"></p>
+  <p class="stage-line" id="stage-line"></p>
+  <p class="refresh-line">
+    <svg class="icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><polyline points="21 3 21 9 15 9"/></svg>
+    <span id="refresh-text">Chargement…</span>
+  </p>
+  <div class="mention-repli hidden" id="mention-repli"></div>
+  <p class="section-label">Conditions actuelles</p>
+  <div class="cartes">
+    <div class="card">
+      <div class="card-title">
+        <svg class="icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+        <span id="titre-ma-position">Ma position</span>
+      </div>
+      <div class="metrics" id="metriques-ma-position"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg class="icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V4"/><path d="M4 4h13l-2.5 3.5L17 11H4"/></svg>
+        <span id="titre-port-arrivee">Port d'arrivée</span>
+      </div>
+      <div class="metrics" id="metriques-port-arrivee"></div>
+    </div>
+  </div>
+
+  <p class="section-label">Prévision du jour — vent (nd)</p>
+  <div class="cartes">
+    <div class="card">
+      <div class="card-title">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+        <span style="font-size:13px;">Ma position</span>
+      </div>
+      <div class="forecast-row" id="prevision-ma-position"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V4"/><path d="M4 4h13l-2.5 3.5L17 11H4"/></svg>
+        <span style="font-size:13px;">Port d'arrivée</span>
+      </div>
+      <div class="forecast-row" id="prevision-port-arrivee"></div>
+    </div>
+  </div>
+
+  <p style="font-size:11px; color:var(--text-muted); margin:14px 2px 0;">Vitesse en nœuds. La flèche indique la direction d'où vient le vent.</p>
+
+</div>
+
+<script src="js/app-commun.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+  var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  var DONNEES_NON_DISPONIBLES = 'Données non disponibles';
+
+  var ICONES = {
+    vent: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 16h15a3 3 0 1 1-3 3"/></svg>',
+    rafales: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="8"/><path d="M12 14l4-4"/><path d="M12 3v2"/></svg>',
+    mer: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0"/><path d="M2 17c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0"/></svg>',
+    pluie: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 10.5a6 6 0 0 1-12 0C6 9.5 12 3 12 3z"/></svg>',
+    visibilite: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>'
+  };
+
+  var elDateLine = document.getElementById('date-line');
+  var elStageLine = document.getElementById('stage-line');
+  var elRefreshText = document.getElementById('refresh-text');
+  var elMentionRepli = document.getElementById('mention-repli');
+  var elTitreMaPosition = document.getElementById('titre-ma-position');
+  var elTitrePortArrivee = document.getElementById('titre-port-arrivee');
+  var elMetriquesMaPosition = document.getElementById('metriques-ma-position');
+  var elMetriquesPortArrivee = document.getElementById('metriques-port-arrivee');
+  var elPrevisionMaPosition = document.getElementById('prevision-ma-position');
+  var elPrevisionPortArrivee = document.getElementById('prevision-port-arrivee');
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  function formatDateAffichage(date) {
+    return JOURS[date.getDay()] + '. ' + date.getDate() + ' ' + MOIS[date.getMonth()];
+  }
+
+  function formatHeureMin(date) {
+    return pad2(date.getHours()) + 'h' + pad2(date.getMinutes());
+  }
+
+  function directionCardinale(deg) {
+    var noms = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    var index = Math.round(deg / 45) % 8;
+    return noms[index];
+  }
+
+  function fetchForecast(lat, lon) {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+      '&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,visibility' +
+      '&hourly=wind_speed_10m,wind_direction_10m&wind_speed_unit=kn&timezone=auto&forecast_days=1';
+    return fetch(url).then(function (r) {
+      if (!r.ok) { throw new Error('forecast indisponible'); }
+      return r.json();
+    });
+  }
+
+  function fetchMarine(lat, lon) {
+    var url = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + lat + '&longitude=' + lon +
+      '&current=wave_height,wave_direction&cell_selection=sea&timezone=auto&forecast_days=1';
+    return fetch(url).then(function (r) {
+      if (!r.ok) { throw new Error('marine indisponible'); }
+      return r.json();
+    });
+  }
+
+  function ligneMetrique(icone, libelle, valeur, unite, pleineLargeur) {
+    var classe = pleineLargeur ? 'metric-full' : '';
+    return '<div class="' + classe + '">' +
+      '<p class="metric-label">' + icone + libelle + '</p>' +
+      '<p class="metric-value">' + valeur + (unite ? ' <span class="metric-unit">' + unite + '</span>' : '') + '</p>' +
+      '</div>';
+  }
+
+  function remplirCarteActuelle(elCible, resultatForecast, resultatMarine) {
+    if (resultatForecast.status !== 'fulfilled' && resultatMarine.status !== 'fulfilled') {
+      elCible.innerHTML = '<p class="indispo">' + DONNEES_NON_DISPONIBLES + '</p>';
+      return;
+    }
+    var html = '';
+    if (resultatForecast.status === 'fulfilled') {
+      var c = resultatForecast.value.current;
+      html += ligneMetrique(ICONES.vent, 'Vent', Math.round(c.wind_speed_10m), 'nd, ' + directionCardinale(c.wind_direction_10m));
+      html += ligneMetrique(ICONES.rafales, 'Rafales', Math.round(c.wind_gusts_10m), 'nd');
+    } else {
+      html += ligneMetrique(ICONES.vent, 'Vent', DONNEES_NON_DISPONIBLES, '');
+      html += ligneMetrique(ICONES.rafales, 'Rafales', DONNEES_NON_DISPONIBLES, '');
+    }
+    if (resultatMarine.status === 'fulfilled') {
+      var m = resultatMarine.value.current;
+      html += ligneMetrique(ICONES.mer, 'État de mer', m.wave_height.toFixed(1), 'm, ' + directionCardinale(m.wave_direction));
+    } else {
+      html += ligneMetrique(ICONES.mer, 'État de mer', DONNEES_NON_DISPONIBLES, '');
+    }
+    if (resultatForecast.status === 'fulfilled') {
+      var c2 = resultatForecast.value.current;
+      html += ligneMetrique(ICONES.pluie, 'Précipitations', c2.precipitation, 'mm');
+      var visKm = c2.visibility / 1000;
+      var visTexte = visKm >= 10 ? '&gt; 10' : visKm.toFixed(1);
+      html += ligneMetrique(ICONES.visibilite, 'Visibilité', visTexte, 'km', true);
+    } else {
+      html += ligneMetrique(ICONES.pluie, 'Précipitations', DONNEES_NON_DISPONIBLES, '');
+      html += ligneMetrique(ICONES.visibilite, 'Visibilité', DONNEES_NON_DISPONIBLES, '', true);
+    }
+    elCible.innerHTML = html;
+  }
+
+  function trouverIndexHeure(tableauHeures, heureCible, maintenant) {
+    for (var i = 0; i < tableauHeures.length; i++) {
+      var d = new Date(tableauHeures[i]);
+      if (d.getDate() === maintenant.getDate() && d.getHours() === heureCible) { return i; }
+    }
+    return -1;
+  }
+
+  function remplirCartePrevision(elCible, resultatForecast, maintenant) {
+    if (resultatForecast.status !== 'fulfilled') {
+      elCible.innerHTML = '<p class="indispo">' + DONNEES_NON_DISPONIBLES + '</p>';
+      return;
+    }
+    var hourly = resultatForecast.value.hourly;
+    var heureRef = maintenant.getHours();
+    var heureDepart = maintenant.getMinutes() === 0 ? heureRef : heureRef + 1;
+    var html = '';
+    var compte = 0;
+    for (var k = 0; k < 6; k++) {
+      var heureCible = heureDepart + k * 2;
+      if (heureCible > 23) { break; }
+      var index = trouverIndexHeure(hourly.time, heureCible, maintenant);
+      if (index === -1) { continue; }
+      var vitesse = Math.round(hourly.wind_speed_10m[index]);
+      var direction = hourly.wind_direction_10m[index];
+      html += '<div class="forecast-slot"><p class="hour">' + pad2(heureCible) + 'h</p>' +
+        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(' + direction + 'deg);"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>' +
+        '<p class="speed">' + vitesse + '</p></div>';
+      compte++;
+    }
+    if (compte === 0) {
+      elCible.innerHTML = '<p class="indispo">' + DONNEES_NON_DISPONIBLES + '</p>';
+      return;
+    }
+    elCible.innerHTML = html;
+  }
+
+  function afficherMentionRepli(portDepart) {
+    elMentionRepli.classList.remove('hidden');
+    elMentionRepli.textContent = "Position réelle non disponible : repli sur le port de départ de l'étape (" + portDepart + ').';
+  }
+
+  function chargerMeteo() {
+    var maintenant = AppCommun.getEffectiveNow();
+    elDateLine.textContent = formatDateAffichage(maintenant) + ', ' + formatHeureMin(maintenant);
+
+    var etape = AppCommun.getEtapeDuJour(maintenant);
+    var libelleEtape = 'Étape ' + etape.numero;
+    if (etape.repli === 'avant-course') { libelleEtape = 'Avant le départ — Étape ' + etape.numero; }
+    if (etape.repli === 'apres-course') { libelleEtape = 'Course terminée — dernière étape'; }
+    elStageLine.textContent = libelleEtape + ' — ' + etape.portDepart + ' → ' + etape.portArrivee;
+    elTitrePortArrivee.textContent = "Port d'arrivée — " + etape.portArrivee;
+
+    var coordArrivee = AppCommun.COORDONNEES_ESCALES[etape.portArrivee];
+
+    AppCommun.getEffectivePosition().then(function (position) {
+      var pointMaPosition;
+      if (position && position.lat != null && position.lon != null) {
+        pointMaPosition = { lat: position.lat, lon: position.lon };
+      } else {
+        var coordDepart = AppCommun.COORDONNEES_ESCALES[etape.portDepart];
+        pointMaPosition = { lat: coordDepart.lat, lon: coordDepart.lon };
+        elTitreMaPosition.textContent = 'Ma position (indisponible)';
+        afficherMentionRepli(etape.portDepart);
+      }
+
+      Promise.allSettled([
+        fetchForecast(pointMaPosition.lat, pointMaPosition.lon),
+        fetchForecast(coordArrivee.lat, coordArrivee.lon),
+        fetchMarine(pointMaPosition.lat, pointMaPosition.lon),
+        fetchMarine(coordArrivee.lat, coordArrivee.lon)
+      ]).then(function (resultats) {
+        var forecastMa = resultats[0];
+        var forecastArrivee = resultats[1];
+        var marineMa = resultats[2];
+        var marineArrivee = resultats[3];
+
+        remplirCarteActuelle(elMetriquesMaPosition, forecastMa, marineMa);
+        remplirCarteActuelle(elMetriquesPortArrivee, forecastArrivee, marineArrivee);
+        remplirCartePrevision(elPrevisionMaPosition, forecastMa, maintenant);
+        remplirCartePrevision(elPrevisionPortArrivee, forecastArrivee, maintenant);
+
+        if (forecastMa.status === 'fulfilled' && forecastMa.value.current && forecastMa.value.current.time) {
+          var d = new Date(forecastMa.value.current.time);
+          elRefreshText.textContent = 'Données à ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes());
+        } else {
+          elRefreshText.textContent = DONNEES_NON_DISPONIBLES;
+        }
+      });
+    });
+  }
+
+  var banniere = document.getElementById('banniere-simulation');
+  if (AppCommun.estModeSimulationActif()) {
+    banniere.classList.remove('hidden');
+    banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
+  }
+
+  chargerMeteo();
+})();
+</script>
+</body>
+</html>
