@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Courants et marées — Tour du Finistère 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/app-commun.js"></script>
+<script src="js/courants-data.js"></script>
+<style>
+  :root{
+    --blue:#0B4C7C; --gold:#C9971F; --bg:#FAFAFA; --surface2:#FFFFFF;
+    --border:#E2E2E0; --text-primary:#2B2A28; --text-secondary:#6B6862; --text-muted:#8A867F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);font-family:Arial, Helvetica, sans-serif;color:var(--text-primary);}
+  .page{max-width:720px;margin:0 auto;padding:20px;}
+  .retour{font-size:13px;color:var(--blue);text-decoration:none;}
+  .entete{margin:14px 0 18px;}
+  .entete h1{font-size:18px;margin:0 0 4px;}
+  .entete p{font-size:13px;color:var(--text-secondary);margin:0;}
+  .section-label{font-size:13px;color:var(--text-muted);margin:18px 0 10px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;}
+  .tide-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
+  .tide-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:110px;}
+  .tide-card p.port-name{font-size:13px;color:var(--text-muted);margin:0 0 6px;}
+  .header-row{display:flex;justify-content:space-between;align-items:center;margin:14px 0 10px;flex-wrap:wrap;gap:8px;}
+  .toggle{display:flex;gap:6px;}
+  .toggle button{border-radius:8px;padding:7px 16px;font-size:13px;font-family:inherit;border:1px solid var(--border);background:var(--surface2);color:var(--text-secondary);cursor:pointer;}
+  .toggle button.active{background:var(--blue);color:#FFFFFF;border-color:var(--blue);font-weight:600;}
+  #map{height:440px;border-radius:12px;border:1px solid var(--border);}
+  .slider-row{margin-top:12px;display:flex;align-items:center;gap:12px;}
+  .slider-row input[type=range]{flex:1;accent-color:var(--blue);}
+  .slider-time{font-size:12px;color:var(--text-muted);min-width:110px;text-align:right;}
+  .caption{font-size:11px;color:var(--text-muted);margin:10px 2px 0;line-height:1.6;}
+  .badge-approx{display:inline-block;background:#FDF3E0;color:#8A6A16;border:1px solid #E9CD8E;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+
+  <div class="entete">
+    <h1 id="titre-etape">Courants et marées</h1>
+    <p id="sous-titre-etape"></p>
+  </div>
+
+  <p class="section-label">Marée du jour</p>
+  <div class="tide-grid">
+    <div class="tide-card">
+      <p class="port-name" id="nom-port-depart">Port de départ</p>
+      <div id="widget-depart"></div>
+    </div>
+    <div class="tide-card">
+      <p class="port-name" id="nom-port-arrivee">Port d'arrivée</p>
+      <div id="widget-arrivee"></div>
+    </div>
+  </div>
+
+  <div class="header-row">
+    <p class="section-label" style="margin:0;" id="label-reference">Courants — référence</p>
+    <div class="toggle">
+      <button id="btn-actuel" class="active">Actuel</button>
+      <button id="btn-previsions">Prévisions</button>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <div class="slider-row" id="ligne-curseur" style="display:none;">
+    <input type="range" id="curseur-heure" min="0" max="12" step="1" value="6">
+    <span class="slider-time" id="curseur-libelle">Pleine mer (0h)</span>
+  </div>
+
+  <p class="caption" id="caption-approx"></p>
+  <p class="caption">
+    Fond de carte : © OpenStreetMap contributors, balisage marin © OpenSeaMap (licence ODbL / CC-BY-SA).
+    Flèches de courant : points de grille réels du produit SHOM "Courants de marée 2D" (licence Etalab v2.0).
+    Coefficient du jour interpolé entre vive-eau (95) et morte-eau (45) — estimation Claude, pas une donnée SHOM brute.
+    Widgets marée : SHOM, services.data.shom.fr/hdm/vignette.
+  </p>
+</div>
+<script>
+// Codes de port SHOM (maree.shom.fr), verifies un par un le 24/07/2026 (recherche directe sur
+// le site, cf. session de travail). Ne pas modifier sans revalider de la meme maniere.
+var CODES_SHOM = {
+  'Roscoff': 'ROSCOFF',
+  "Aber Wrac'h": 'ABER_WRAC_H',
+  'Lanildut': 'LANILDUT',
+  'Camaret-sur-Mer': 'CAMARET-SUR-MER',
+  'Douarnenez': 'DOUARNENEZ',
+  'Port la Forêt': 'PORT_LA_FORET'
+};
+
+// Centre et zoom de carte par etape (calcules a partir de l'emprise reelle des points de courant).
+var VUE_CARTE_PAR_ETAPE = {
+  1: { lat: 48.7279, lon: -4.324, zoom: 10 },
+  2: { lat: 48.6163, lon: -4.746, zoom: 11 },
+  3: { lat: 48.4061, lon: -4.8133, zoom: 11 },
+  4: { lat: 48.3116, lon: -4.4493, zoom: 11 },
+  5: { lat: 48.1147, lon: -4.3728, zoom: 12 },
+  6: { lat: 47.9888, lon: -4.1223, zoom: 10 }
+};
+
+// Seuils de force du courant (proposition Claude, a ajuster si besoin - pas une convention SHOM).
+function styleParVitesse(kn) {
+  if (kn < 1)  return { couleur: '#A9D18E', epaisseur: 1 };
+  if (kn < 2)  return { couleur: '#E8C547', epaisseur: 1.5 };
+  if (kn < 3)  return { couleur: '#E08B2E', epaisseur: 2.25 };
+  return { couleur: '#A32D2D', epaisseur: 3 };
+}
+</script>
+<script>
+var maintenant = window.AppCommun.getEffectiveNow();
+var etape = window.AppCommun.getEtapeDuJour(maintenant);
+var portReference = window.AppCommun.PORT_REFERENCE_PAR_ETAPE[etape.numero];
+var donneesEtape = window.COURANTS_DATA[String(etape.numero)];
+
+document.getElementById('titre-etape').textContent =
+  'Étape ' + etape.numero + ' — ' + etape.portDepart + ' \u2192 ' + etape.portArrivee;
+document.getElementById('sous-titre-etape').textContent =
+  'Référence marée/courant : ' + portReference +
+  (etape.repli ? ' (' + (etape.repli === 'avant-course' ? 'avant le début de la course' : 'après la fin de la course') + ')' : '');
+document.getElementById('nom-port-depart').textContent = 'Port de départ — ' + etape.portDepart;
+document.getElementById('nom-port-arrivee').textContent = 'Port d\u0027arrivée — ' + etape.portArrivee;
+document.getElementById('label-reference').textContent = 'Courant et carte — référence ' + portReference;
+
+if (donneesEtape.note) {
+  document.getElementById('caption-approx').innerHTML =
+    '<span class="badge-approx">Approximation</span><br>' + donneesEtape.note;
+}
+
+function chargerWidget(conteneurId, nomEscale) {
+  var code = CODES_SHOM[nomEscale];
+  var conteneur = document.getElementById(conteneurId);
+  if (!code) {
+    conteneur.textContent = 'Code SHOM non défini pour ' + nomEscale;
+    return;
+  }
+  var script = document.createElement('script');
+  script.src = 'https://services.data.shom.fr/hdm/vignette/petite/' + code + '?locale=fr';
+  conteneur.appendChild(script);
+}
+chargerWidget('widget-depart', etape.portDepart);
+chargerWidget('widget-arrivee', etape.portArrivee);
+
+// Coefficient du jour pour le port de reference (pour interpolation vive-eau/morte-eau).
+var dateISO = maintenant.toISOString().slice(0, 10);
+var refMaree = window.AppCommun.getMareeReference(portReference, dateISO);
+var pmDuJour = refMaree.evenements.filter(function (e) { return e.type === 'PM'; })[0];
+var coefficientJour = (pmDuJour && pmDuJour.coefficient) ? pmDuJour.coefficient : 70;
+var facteurVE = Math.max(0, Math.min(1, (coefficientJour - 45) / (95 - 45)));
+</script>
+<script>
+var vue = VUE_CARTE_PAR_ETAPE[etape.numero];
+var map = L.map('map').setView([vue.lat, vue.lon], vue.zoom);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="https://www.openseamap.org">OpenSeaMap</a>'
+}).addTo(map);
+
+var coordDepart = window.AppCommun.COORDONNEES_ESCALES[etape.portDepart];
+var coordArrivee = window.AppCommun.COORDONNEES_ESCALES[etape.portArrivee];
+if (coordDepart) { L.marker([coordDepart.lat, coordDepart.lon]).addTo(map).bindPopup(etape.portDepart + ' (départ)'); }
+if (coordArrivee) { L.marker([coordArrivee.lat, coordArrivee.lon]).addTo(map).bindPopup(etape.portArrivee + ' (arrivée)'); }
+
+function fleche(bearing, w, couleur) {
+  var d = 'M ' + (-w) + ',16 L ' + (-w) + ',-4 L ' + (-w*2) + ',-4 L 0,-20 L ' + (w*2) + ',-4 L ' + w + ',-4 L ' + w + ',16 Z';
+  var svg = '<svg width="36" height="36" viewBox="-18,-24 36 44" style="overflow:visible;">' +
+    '<g transform="rotate(' + bearing + ')"><path d="' + d + '" fill="' + couleur + '" stroke="#FFFFFF" stroke-width="0.6"/></g></svg>';
+  return L.divIcon({ html: svg, className: '', iconSize: [36, 36], iconAnchor: [18, 18] });
+}
+
+var marqueursCourant = [];
+function dessinerFleches(indexHeure) {
+  marqueursCourant.forEach(function (m) { map.removeLayer(m); });
+  marqueursCourant = [];
+  donneesEtape.points.forEach(function (p) {
+    var ve = p.ve[indexHeure];
+    var me = p.me[indexHeure];
+    var vitesse = me.speed + facteurVE * (ve.speed - me.speed);
+    var style = styleParVitesse(vitesse);
+    var icone = fleche(ve.bearing, style.epaisseur * 2, style.couleur);
+    var marqueur = L.marker([p.lat, p.lon], { icon: icone }).addTo(map);
+    marqueur.bindTooltip(vitesse.toFixed(1) + ' nd', { permanent: true, direction: 'right', offset: [10, 0], className: 'etiquette-vitesse' });
+    marqueur.bindPopup(
+      'Point réel ' + p.source + '<br>lat ' + p.lat.toFixed(4) + ', lon ' + p.lon.toFixed(4) +
+      '<br>Vive-eau : ' + ve.speed.toFixed(1) + ' nd, ' + ve.bearing + '°' +
+      '<br>Morte-eau : ' + me.speed.toFixed(1) + ' nd, ' + me.bearing + '°' +
+      '<br>Estimé (coef ' + coefficientJour + ') : ' + vitesse.toFixed(1) + ' nd'
+    );
+    marqueursCourant.push(marqueur);
+  });
+}
+</script>
+<script>
+var btnActuel = document.getElementById('btn-actuel');
+var btnPrevisions = document.getElementById('btn-previsions');
+var ligneCurseur = document.getElementById('ligne-curseur');
+var curseur = document.getElementById('curseur-heure');
+var curseurLibelle = document.getElementById('curseur-libelle');
+
+function libelleHeure(indexHeure) {
+  var offset = indexHeure - 6;
+  if (offset === 0) { return 'Pleine mer (0h)'; }
+  return (offset > 0 ? '+' : '') + offset + 'h autour de la PM';
+}
+
+function indexHeureActuel() {
+  var pm = window.AppCommun.getPleineMerProche(portReference, maintenant);
+  if (!pm) { return 6; }
+  var parties = pm.heure.split(':');
+  var minutesPM = parseInt(parties[0], 10) * 60 + parseInt(parties[1], 10);
+  var minutesNow = maintenant.getHours() * 60 + maintenant.getMinutes();
+  var ecartHeures = Math.round((minutesNow - minutesPM) / 60);
+  ecartHeures = Math.max(-6, Math.min(6, ecartHeures));
+  return ecartHeures + 6;
+}
+
+function activerActuel() {
+  btnActuel.classList.add('active');
+  btnPrevisions.classList.remove('active');
+  ligneCurseur.style.display = 'none';
+  var idx = indexHeureActuel();
+  curseur.value = idx;
+  curseurLibelle.textContent = libelleHeure(idx);
+  dessinerFleches(idx);
+}
+
+function activerPrevisions() {
+  btnPrevisions.classList.add('active');
+  btnActuel.classList.remove('active');
+  ligneCurseur.style.display = 'flex';
+  curseurLibelle.textContent = libelleHeure(parseInt(curseur.value, 10));
+  dessinerFleches(parseInt(curseur.value, 10));
+}
+
+btnActuel.addEventListener('click', activerActuel);
+btnPrevisions.addEventListener('click', activerPrevisions);
+curseur.addEventListener('input', function () {
+  var idx = parseInt(curseur.value, 10);
+  curseurLibelle.textContent = libelleHeure(idx);
+  dessinerFleches(idx);
+});
+
+activerActuel();
+
+// Position GPS en temps reel (suivi continu, cf. spec 9 : watchPosition, different de la
+// fonctionnalite 4 qui utilise getCurrentPosition).
+var marqueurGPS = null;
+if ('geolocation' in navigator) {
+  navigator.geolocation.watchPosition(function (pos) {
+    var latlng = [pos.coords.latitude, pos.coords.longitude];
+    if (!marqueurGPS) {
+      marqueurGPS = L.circleMarker(latlng, { radius: 7, color: '#FFFFFF', weight: 2, fillColor: '#0B4C7C', fillOpacity: 1 }).addTo(map);
+      marqueurGPS.bindPopup('Ma position');
+    } else {
+      marqueurGPS.setLatLng(latlng);
+    }
+  }, function () { /* position indisponible : carte utilisable sans marqueur, pas de repli pertinent (cf. spec 9) */ }, { enableHighAccuracy: true });
+}
+</script>
+</body>
+</html>
