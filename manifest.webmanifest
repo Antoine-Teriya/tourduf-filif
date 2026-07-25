@@ -1,0 +1,17 @@
+{
+  "name": "Tourduf’ Filif’",
+  "short_name": "Tourduf’ Filif’",
+  "description": "Aide à la régate, Tour du Finistère 2026, Filifer FRA 27614",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAFAFA",
+  "theme_color": "#0B4C7C",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
