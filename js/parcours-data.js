@@ -93,6 +93,7 @@
         {ordre:13,nom:"Pelen",action:"Laisser",cote:"tribord",type:"Card Sud",consigne:"Laisser tribord",lat:48.26092,lon:-4.65967},
         {ordre:14,nom:"Mendufa",action:"Laisser",cote:"tribord",type:"Card Nord",consigne:"Laisser tribord",lat:48.2675,lon:-4.65708},
         {ordre:15,nom:"Petit Leac'h",action:"Laisser",cote:"babord",type:"Card Sud",consigne:"Laisser bâbord",lat:48.271,lon:-4.66325},
+        {ordre:16,nom:"La Louve",action:"Laisser",cote:"tribord",type:"Card Ouest",consigne:"Laisser tribord",lat:48.27975,lon:-4.63388},
         {ordre:17,nom:"Pointe du Grand Grouin",action:"Laisser",cote:"tribord",type:"Roches",consigne:"Laisser tribord",lat:48.28875,lon:-4.60083},
         {ordre:"A",nom:"Camaret",action:null,cote:null,type:"",consigne:"Voir IC 14.1",lat:48.28217,lon:-4.58667}
       ]},
