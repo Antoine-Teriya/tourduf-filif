@@ -41,7 +41,12 @@
     { date: '2026-07-29', heureLimite: null, numero: 3, portDepart: 'Lanildut', portArrivee: 'Camaret-sur-Mer' },
     { date: '2026-07-30', heureLimite: null, numero: 4, portDepart: 'Camaret-sur-Mer', portArrivee: 'Douarnenez' },
     { date: '2026-07-31', heureLimite: '17:00', numero: 5, portDepart: 'Douarnenez', portArrivee: 'Douarnenez' },
-    { date: '2026-07-31', heureLimite: null, numero: 6, portDepart: 'Douarnenez', portArrivee: 'Port la Forêt' }
+    { date: '2026-07-31', heureLimite: null, numero: 6, portDepart: 'Douarnenez', portArrivee: 'Port la Forêt' },
+    // Correctif ANO-1 (25/07/2026) : le 01/08 est un jour de course, rattaché à l'étape 6
+    // dans son intégralité (arrivée de la course de nuit Douarnenez -> Port la Forêt).
+    // Cette ligne recale mécaniquement le repli après-course sur le 01/08 (dernier jour
+    // de course) : voir la clause de repli plus bas, qui pointe sur la dernière entrée.
+    { date: '2026-08-01', heureLimite: null, numero: 6, portDepart: 'Douarnenez', portArrivee: 'Port la Forêt' }
   ];
 
   // Port de référence marée/courant retenu par étape (fonctionnalité 5). Décision Antoine du
@@ -1086,11 +1091,21 @@
     if (entrees.length === 1) {
       return Object.assign({}, entrees[0], { repli: null });
     }
-    // Vendredi 31/07 : deux entrées ce jour-là, bascule sur l'heure (seuil 17h00).
-    var heureCourante = date.getHours() * 60 + date.getMinutes();
-    var seuil = 17 * 60;
-    var choisie = heureCourante < seuil ? entrees[0] : entrees[1];
-    return Object.assign({}, choisie, { repli: null });
+    if (entrees.length >= 2) {
+      // Vendredi 31/07 : deux entrées ce jour-là, bascule sur l'heure (seuil 17h00).
+      var heureCourante = date.getHours() * 60 + date.getMinutes();
+      var seuil = 17 * 60;
+      var choisie = heureCourante < seuil ? entrees[0] : entrees[1];
+      return Object.assign({}, choisie, { repli: null });
+    }
+    // Garde-fou (correctif ANO-1) : date interne à la période de course mais absente de la
+    // matrice — trou de calendrier. Recale sur l'étape la plus proche au lieu de retourner un
+    // objet incomplet (cause de la cascade d'exceptions constatée en recette le 25/07/2026).
+    var plusProche = CALENDRIER_COURSES.reduce(function (acc, c) {
+      var ecart = Math.abs(new Date(c.date) - new Date(dateISO));
+      return (!acc || ecart < acc.ecart) ? { entree: c, ecart: ecart } : acc;
+    }, null);
+    return Object.assign({}, plusProche.entree, { repli: null });
   }
 
   global.AppCommun = {
