@@ -91,6 +91,7 @@
 
   <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
   <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
+  <div class="banniere-simulation hidden" id="banniere-reinit-parcours">PARCOURS RÉINITIALISÉ — étape modifiée, vérifiez la sélection</div>
 
   <h1>Parcours de l'étape</h1>
   <p class="stage-line" id="stage-line"></p>
@@ -187,7 +188,8 @@
 var CLE = 'tourduf_parcours_v1';
 var etat = {
   parcours: '0', segment: 0, ligne: null, bouee: false,
-  boueeDistance: 0.5, boueeCap: 0, ventDirection: 240, ventForce: 14, perso: []
+  boueeDistance: 0.5, boueeCap: 0, ventDirection: 240, ventForce: 14, perso: [],
+  derniereEtapeConnue: undefined
 };
 var maintenant = window.AppCommun.getEffectiveNow();
 var etape = window.AppCommun.getEtapeDuJour(maintenant);
@@ -297,10 +299,10 @@ function exporterGPX() {
           : (variantes[parseInt(etat.parcours, 10)] || {}).nom;
   var x = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<gpx version="1.1" creator="Filifer - Tour du Finistere 2026" xmlns="http://www.topografix.com/GPX/1/1">\n' +
-    '<rte><name>Étape ' + etape.numero + ' — ' + nom + '</name>\n';
+    '<rte><n>Étape ' + etape.numero + ' — ' + nom + '</n>\n';
   pts.forEach(function (p) {
-    x += '<rtept lat="' + p.lat + '" lon="' + p.lon + '"><name>' +
-         String(p.nom).replace(/[<>&]/g, '') + '</name></rtept>\n';
+    x += '<rtept lat="' + p.lat + '" lon="' + p.lon + '"><n>' +
+         String(p.nom).replace(/[<>&]/g, '') + '</n></rtept>\n';
   });
   x += '</rte></gpx>\n';
   var url = URL.createObjectURL(new Blob([x], { type: 'application/gpx+xml' }));
@@ -463,6 +465,21 @@ function initSelect() {
 (function initialiser() {
   lireEtat();
 
+  // Q3 (25-26/07/2026, decision Antoine : reset auto + banniere) : la selection de
+  // parcours (etat.parcours) est persistee dans une cle localStorage commune a toutes
+  // les etapes. Sans ce controle, un index conserve d'une etape a l'autre peut pointer
+  // vers un parcours different (ou inexistant) sur la nouvelle etape, silencieusement.
+  // On compare l'etape courante a la derniere etape connue et on reinitialise si elles
+  // different (y compris retour vers une etape deja visitee : toute etape differente
+  // de la derniere connue declenche le reset).
+  var etapeAChange = (etat.derniereEtapeConnue !== undefined && etat.derniereEtapeConnue !== etape.numero);
+  if (etapeAChange) {
+    etat.parcours = variantes.length ? '0' : 'perso';
+    etat.segment = 0;
+  }
+  etat.derniereEtapeConnue = etape.numero;
+  ecrireEtat();
+
   document.getElementById('stage-line').textContent =
     'Étape ' + etape.numero + ' — ' + etape.portDepart + ' \u2192 ' + etape.portArrivee +
     (etape.repli ? (etape.repli === 'avant-course' ? ' (avant le début de la course)' : ' (après la fin de la course)') : '');
@@ -473,6 +490,9 @@ function initSelect() {
   var banniere = document.getElementById('banniere-simulation');
   if (window.AppCommun.estModeSimulationActif()) { banniere.className = 'banniere-simulation'; }
   banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
+
+  var bannereReinit = document.getElementById('banniere-reinit-parcours');
+  if (etapeAChange) { bannereReinit.className = 'banniere-simulation'; }
 
   initSelect();
   afficherPerso();
