@@ -91,7 +91,6 @@
 
   <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
   <div class="banniere-simulation hidden" id="banniere-simulation">MODE SIMULATION ACTIF — toucher pour ajuster</div>
-  <div class="banniere-simulation hidden" id="banniere-reinit-parcours">PARCOURS RÉINITIALISÉ — étape modifiée, vérifiez la sélection</div>
 
   <h1>Parcours de l'étape</h1>
   <p class="stage-line" id="stage-line"></p>
@@ -465,9 +464,10 @@ function initSelect() {
 (function initialiser() {
   lireEtat();
 
-  // Q3 (25-26/07/2026, decision Antoine : reset auto + banniere) : la selection de
-  // parcours (etat.parcours) est persistee dans une cle localStorage commune a toutes
-  // les etapes. Sans ce controle, un index conserve d'une etape a l'autre peut pointer
+  // Q3 (25-26/07/2026, decision Antoine : reset auto silencieux, sans banniere - le
+  // bandeau initialement prevu genait la lecture). La selection de parcours
+  // (etat.parcours) est persistee dans une cle localStorage commune a toutes les
+  // etapes. Sans ce controle, un index conserve d'une etape a l'autre peut pointer
   // vers un parcours different (ou inexistant) sur la nouvelle etape, silencieusement.
   // On compare l'etape courante a la derniere etape connue et on reinitialise si elles
   // different (y compris retour vers une etape deja visitee : toute etape differente
@@ -490,9 +490,6 @@ function initSelect() {
   var banniere = document.getElementById('banniere-simulation');
   if (window.AppCommun.estModeSimulationActif()) { banniere.className = 'banniere-simulation'; }
   banniere.addEventListener('click', function () { window.location.href = 'index.html'; });
-
-  var bannereReinit = document.getElementById('banniere-reinit-parcours');
-  if (etapeAChange) { bannereReinit.className = 'banniere-simulation'; }
 
   initSelect();
   afficherPerso();

@@ -248,12 +248,7 @@ function dessinerFleches(indexHeure) {
     var style = styleParVitesse(vitesse);
     var icone = fleche(ve.bearing, style.epaisseur * 2, style.couleur);
     var marqueur = L.marker([p.lat, p.lon], { icon: icone }).addTo(map);
-    // Etiquette positionnee sous l'icone (25-26/07/2026, correctif Q1/ANO-2, decision
-    // Antoine du 25/07 soir) : position ecran fixe (sous le centre de l'icone),
-    // independante du cap de la fleche - evite un calcul de rotation par point et
-    // ameliore la lisibilite sur les etapes a forte densite (4, 6) sans reduire le
-    // nombre de fleches/etiquettes affichees.
-    marqueur.bindTooltip(vitesse.toFixed(1) + ' nd', { permanent: true, direction: 'bottom', offset: [0, 6], className: 'etiquette-vitesse' });
+    marqueur.bindTooltip(vitesse.toFixed(1) + ' nd', { permanent: true, direction: 'right', offset: [10, 0], className: 'etiquette-vitesse' });
     marqueur.bindPopup(
       'Point réel ' + p.source + '<br>lat ' + p.lat.toFixed(4) + ', lon ' + p.lon.toFixed(4) +
       '<br>Vive-eau : ' + ve.speed.toFixed(1) + ' nd, ' + ve.bearing + '°' +
