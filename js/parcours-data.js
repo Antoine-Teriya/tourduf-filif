@@ -152,8 +152,8 @@
         {ordre:1,nom:"Pointe du Grand Grouin",action:"Laisser",cote:"babord",type:"Roches",consigne:"Laisser bâbord",lat:48.28872,lon:-4.60082},
         {ordre:2,nom:"La Louve",action:"Contourner",cote:"babord",type:"Card Ouest",consigne:"Contourner bâbord",lat:48.27973,lon:-4.63378},
         {ordre:3,nom:"Pelen",action:"Laisser",cote:"tribord",type:"Card Sud",consigne:"Laisser tribord",lat:48.26092,lon:-4.65963},
-        {ordre:4,nom:"Basse du Lis",action:"Contourner",cote:"tribord",type:"Card Sud",consigne:"Contourner tribord",lat:48.2165,lon:-4.74208},
-        {ordre:5,nom:"Basse Vieille",action:"Contourner",cote:"tribord",type:"Danger Isolé",consigne:"Contourner tribord",lat:48.13722,lon:-4.59578},
+        {ordre:4,nom:"Basse du Lis",action:"Contourner",cote:"babord",type:"Card Sud",consigne:"Contourner bâbord",lat:48.2165,lon:-4.74208},
+        {ordre:5,nom:"Basse Vieille",action:"Contourner",cote:"babord",type:"Danger Isolé",consigne:"Contourner bâbord",lat:48.13722,lon:-4.59578},
         {ordre:"A",nom:"Douarnenez",action:null,cote:null,type:"",consigne:"Voir IC 14.1",lat:48.106,lon:-4.34292}
       ]}
     ]},
