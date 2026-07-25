@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mode d'emploi — Filifer</title>
+<style>
+  :root{
+    --blue:#0B4C7C;
+    --bg:#FAFAFA;
+    --surface2:#FFFFFF;
+    --border:#E2E2E0;
+    --text-primary:#2B2A28;
+    --text-muted:#8A867F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text-primary);
+    line-height:1.5;
+  }
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:18px 18px 40px;
+  }
+  .retour{
+    display:inline-block;
+    font-size:12px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-bottom:10px;
+  }
+  .brand{
+    font-size:21px;
+    font-weight:700;
+    color:var(--blue);
+    line-height:1.1;
+    margin:6px 0 0;
+  }
+  .brand-sub{
+    font-size:12px;
+    color:var(--text-muted);
+    margin:3px 0 0;
+  }
+  .titre-doc{
+    font-size:15px;
+    font-weight:600;
+    margin:10px 0 0;
+  }
+  h2{
+    font-size:16px;
+    color:var(--blue);
+    border-bottom:2px solid var(--blue);
+    padding-bottom:6px;
+    margin:30px 0 12px;
+  }
+  h2:first-of-type{ margin-top:26px; }
+  p{ font-size:13px; margin:0 0 10px; }
+  ul{ margin:0 0 10px; padding-left:20px; }
+  li{ font-size:13px; margin-bottom:5px; }
+  .badge{
+    display:inline-block;
+    font-size:10px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    padding:2px 8px;
+    border-radius:8px;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+  .badge-statique{ background:#E4EEF6; color:var(--blue); }
+  .badge-dynamique{ background:#FBF0DC; color:#8A6410; }
+  .sommaire{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px 16px;
+    margin:20px 0 8px;
+    font-size:13px;
+  }
+  .sommaire p{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--text-muted);
+    margin:0 0 8px;
+  }
+  .sommaire ol{ margin:0; padding-left:18px; }
+  .sommaire li{ margin-bottom:5px; font-size:13px; }
+  .sommaire a{ color:var(--blue); text-decoration:none; }
+  .card{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .card ul{ margin:0; }
+  .card li:last-child{ margin-bottom:0; }
+  figure.schema{
+    margin:14px 0 6px;
+    text-align:center;
+  }
+  figure.schema img{
+    max-width:100%;
+    height:auto;
+    border:1px solid var(--border);
+    border-radius:8px;
+  }
+  figure.schema figcaption{
+    font-size:11px;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+  .footer{
+    margin-top:40px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-muted);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+
+  <!-- Section 1 — Page de garde -->
+  <p class="brand">Filifer — FRA 27614</p>
+  <p class="brand-sub">Mode d'emploi de l'application d'aide à la régate</p>
+  <p class="titre-doc">Tour du Finistère 2026</p>
+
+  <div class="sommaire">
+    <p>Sommaire</p>
+    <ol>
+      <li><a href="#acces">Accès et installation</a></li>
+      <li><a href="#prise-en-main">Prise en main (page d'accueil)</a></li>
+      <li><a href="#modes">Mode course / Mode simulation</a></li>
+      <li><a href="#voiles">Configuration des voiles</a></li>
+      <li><a href="#instructions">Instructions de course</a></li>
+      <li><a href="#roadbook">Roadbook</a></li>
+      <li><a href="#meteo">Météo</a></li>
+      <li><a href="#courants-marees">Courants et marées</a></li>
+      <li><a href="#parcours">Parcours de l'étape</a></li>
+      <li><a href="#bon-a-savoir">Bon à savoir</a></li>
+      <li><a href="#souci">En cas de souci</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 2 — Accès et installation -->
+  <h2 id="acces">Accès et installation</h2>
+  <p>L'application est accessible à l'adresse : <a href="https://antoine-teriya.github.io/tourduf-filif">antoine-teriya.github.io/tourduf-filif</a></p>
+  <p>Sur téléphone, l'ajouter à l'écran d'accueil (menu du navigateur &rarr; « Ajouter à l'écran d'accueil ») pour un accès direct, comme une application classique.</p>
+
+  <!-- Section 3 — Prise en main -->
+  <h2 id="prise-en-main">Prise en main (page d'accueil)</h2>
+  <p>La page d'accueil affiche le sommaire des 6 fonctionnalités, réparties en deux familles :</p>
+  <ul>
+    <li><strong>Statiques</strong> (1 à 3) : configuration des voiles, instructions de course, roadbook</li>
+    <li><strong>Dynamiques</strong> (4 à 6) : météo, courants et marées, parcours de l'étape</li>
+  </ul>
+  <p>Chaque page fonctionnelle propose un bouton <em>Retour à l'accueil</em> ; pas de menu permanent.</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/accueil.png" alt="Page d'accueil de l'application Filifer" loading="lazy">
+    <figcaption>Page d'accueil — sommaire des 6 fonctionnalités</figcaption>
+  </figure>
+
+  <!-- Section 4 — Mode course / Mode simulation -->
+  <h2 id="modes">Mode course / Mode simulation</h2>
+  <p>Deux boutons en haut de l'accueil : <em>Mode course</em> (par défaut) et <em>Mode simulation</em>.</p>
+  <p>Le mode simulation permet de choisir un jour, une heure et une position fictifs, pour prévisualiser l'app comme si on était à un autre moment de la course, utile pour préparer une étape à l'avance. Une fois activé, chaque page fonctionnelle l'indique par un bandeau <em>Mode simulation actif</em>, avec possibilité d'ajuster les valeurs directement depuis la page.</p>
+
+  <!-- Section 5 — Configuration des voiles -->
+  <h2 id="voiles">Configuration des voiles <span class="badge badge-statique">Statique</span></h2>
+  <p>Diagramme en demi-compas indiquant, pour un angle et une force de vent donnés, la configuration recommandée (grand-voile, génois, spi asymétrique ou symétrique) et la vitesse cible. Données issues des polaires officielles Finot Architectes.</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/voiles.png" alt="Page Configuration des voiles" loading="lazy">
+    <figcaption>Configuration des voiles — polaire et tableau de vitesses cibles</figcaption>
+  </figure>
+
+  <!-- Section 6 — Instructions de course -->
+  <h2 id="instructions">Instructions de course <span class="badge badge-statique">Statique</span></h2>
+  <p>Reprise intégrale des instructions de course officielles CDV29, en version consultable au fil du défilement (schémas de course, cartes, zones).</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/instructions.png" alt="Page Instructions de course" loading="lazy">
+    <figcaption>Instructions de course — sommaire en haut de page</figcaption>
+  </figure>
+
+  <!-- Section 7 — Roadbook -->
+  <h2 id="roadbook">Roadbook <span class="badge badge-statique">Statique</span></h2>
+  <p>Informations pratiques et festivités de chaque escale (Roscoff, Aber Wrac'h, Lanildut, Camaret-sur-Mer, Douarnenez, Port la Forêt) : accès port, horaires, contacts VHF, programme festif. Source exclusive : roadbook officiel CDV29.</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/roadbook.png" alt="Page Roadbook" loading="lazy">
+    <figcaption>Roadbook — sommaire des 6 escales</figcaption>
+  </figure>
+
+  <!-- Section 8 — Météo -->
+  <h2 id="meteo">Météo <span class="badge badge-dynamique">Dynamique</span></h2>
+  <p>Deux points de mesure affichés : la position du bateau (ou le port de départ si la géolocalisation n'est pas disponible) et le port d'arrivée de l'étape. Données fournies par Open-Meteo (prévisions générales et composante marine).</p>
+  <p>Actualisation : les données sont rechargées à chaque ouverture de la page ; il n'y a pas d'actualisation automatique en arrière-plan tant que la page reste affichée. L'horodatage indiqué (« Données à HHhMM ») correspond à l'heure de la donnée la plus récente fournie par Open-Meteo, pas à l'heure de consultation. Pour rafraîchir, il suffit de recharger la page.</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/meteo.png" alt="Page Météo" loading="lazy">
+    <figcaption>Météo — conditions actuelles, position et port d'arrivée</figcaption>
+  </figure>
+
+  <!-- Section 9 — Courants et marées -->
+  <h2 id="courants-marees">Courants et marées <span class="badge badge-dynamique">Dynamique</span></h2>
+  <p>Fond de carte OpenStreetMap et balisage OpenSeaMap ; flèches de courant issues du produit SHOM « Courants de marée 2D » (licence Etalab).</p>
+  <p>Affichage adapté au zoom : le nombre de flèches visibles s'ajuste automatiquement au niveau de zoom, pour rester lisible. Vue large : une flèche représentative par zone. Zoom rapproché : affichage progressif de tous les points disponibles, jusqu'à environ 1 140 points selon l'étape.</p>
+  <p>Zone couverte : les points affichés suivent le tracé réel du parcours de l'étape, avec une marge de 5 milles nautiques de part et d'autre, pour couvrir les écarts de route habituels au près ou au largue. Exception : l'étape 5 (Douarnenez), dont le parcours n'est pas fixé par des points de passage dans les instructions de course ; la zone couverte y est donc plus large, centrée sur la baie.</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/courants-marees.png" alt="Page Courants et marées" loading="lazy">
+    <figcaption>Courants et marées — horaires de marée du jour</figcaption>
+  </figure>
+
+  <!-- Section 10 — Parcours de l'étape -->
+  <h2 id="parcours">Parcours de l'étape <span class="badge badge-dynamique">Dynamique</span></h2>
+  <p><em>Vent réel observé</em> : deux champs à renseigner, direction (en degrés vrais) et force (en nœuds). Ces valeurs alimentent directement le calcul de tous les segments affichés plus bas ; toute modification recalcule immédiatement les résultats.</p>
+  <p><em>Bouée de dégagement</em> (case à cocher) : activée, deux champs supplémentaires apparaissent, distance depuis la ligne de départ (en milles nautiques) et cap depuis la ligne (en degrés). L'app calcule automatiquement les coordonnées et insère la bouée comme première marque, juste après la ligne de départ. Désactivée par défaut : le premier segment va directement de la ligne de départ à la marque n°1, conformément à l'article 9.3 des instructions de course.</p>
+  <p><em>Restitution par segment</em> : pour chaque tronçon entre deux marques, l'app affiche cap direct, distance et angle au vent ; la configuration de voile recommandée au vent seul (même logique que la fonctionnalité 1), avec cap optimal, vitesse cible et VMG. Si une donnée de courant existe sur la zone, un second bloc indique le cap à tenir compte tenu du courant, la vitesse surface, la vitesse fond et la route fond. Si la route directe n'est pas tenable, l'amure à privilégier est signalée, avec une comparaison de progression entre les deux amures possibles.</p>
+  <figure class="schema">
+    <img src="assets/img/mode-emploi/parcours.png" alt="Page Parcours de l'étape" loading="lazy">
+    <figcaption>Parcours de l'étape — ligne de départ et paramètres du jour</figcaption>
+  </figure>
+
+  <!-- Section 11 — Bon à savoir -->
+  <h2 id="bon-a-savoir">Bon à savoir</h2>
+  <div class="card">
+    <ul>
+      <li>Fonctionnalités 4 à 6 : connexion internet indispensable.</li>
+      <li>Géolocalisation : à autoriser dans le navigateur pour la capture de ligne de départ (fonctionnalité 6).</li>
+    </ul>
+  </div>
+
+  <!-- Section 12 — En cas de souci -->
+  <h2 id="souci">En cas de souci</h2>
+  <div class="card">
+    <ul>
+      <li>Page qui ne charge pas &rarr; vérifier la connexion (fonctionnalités 4 à 6 uniquement).</li>
+      <li>Géolocalisation refusée &rarr; possibilité de saisir la position manuellement.</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <a class="retour" href="index.html">&larr; Retour à l'accueil</a>
+    <p>Filifer — FRA 27614 — Tour du Finistère 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
